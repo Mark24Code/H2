@@ -4,6 +4,6 @@ from django.contrib.auth.models import Group, User
 
 
 def UserProfile(mongo.Document):
-    user =
+    pass
 
 

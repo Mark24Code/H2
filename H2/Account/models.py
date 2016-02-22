@@ -1,9 +1,9 @@
-from mongoengine as mongo
 from django.db import models
 from django.contrib.auth.models import Group, User
+import  mongoengine as mongo
 
 
-def UserProfile(mongo.Document):
+class UserProfile(mongo.Document):
     pass
 
 

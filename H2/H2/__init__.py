@@ -1,3 +1,7 @@
+##连接MySQL
+import pymysql
+pymysql.install_as_MySQLdb()
+
 #连接mongoDB
 from django.conf import settings
 try:

@@ -86,8 +86,12 @@ WSGI_APPLICATION = 'H2.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.',
-        'NAME': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'H2',
+        'USER':'atom',
+        'PASSWORD':'atom',
+        'HOST':'127.0.0.1',
+        'PORT':'3306',
     }
 }
 

@@ -15,12 +15,14 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-#mongoDB
-ACCOUNT_MONGO = {
-    "DB":"test",
-    "HOST":"localhost",
-    "PORT":27017
-}
+################  Mongo DB
+# #mongoDB
+# ACCOUNT_MONGO = {
+#     "DB":"test",
+#     "HOST":"localhost",
+#     "PORT":27017
+# }
+################  Mongo DB End
 
 
 # Quick-start development settings - unsuitable for production

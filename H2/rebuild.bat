@@ -1,6 +1,6 @@
 cd InitDB
 mysql -u atom --password=atom H2 < rebuild_database.sql
 cd ..
-python manage.py makemigrations
-python manage.py migrate
+python3 manage.py makemigrations
+python3 manage.py migrate
 pause

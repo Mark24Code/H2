@@ -103,7 +103,6 @@ DATABASES = {
 
 LANGUAGE_CODE = 'zh_cn'
 
-TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 

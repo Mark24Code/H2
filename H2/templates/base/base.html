@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block meta %}{% endblock %}
+    <title>{% block title %}H2{% endblock %}</title>
+
+
+    <!-- start css  -->
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/static/awesome-font/css/font-awesome.min.css" rel="stylesheet">
+    {% block css %}{% endblock %}
+    <!-- end   css  -->
+
+
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+
+    <!-- start js  -->
+    <script src="/static/jquery/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+    {% block js %}{% endblock %}
+    <!-- end   js  -->
+</html>

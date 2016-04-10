@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang='zh-CN'>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,14 +13,17 @@
     <link type="text/css" rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="/static/awesome-font/css/font-awesome.min.css" rel="stylesheet">
-    base
+
+    <link type="text/css" rel="stylesheet" href="/static/css/base.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/static/css/content_base.css" rel="stylesheet">
     {% block css %}{% endblock %}
     <!-- end   css  -->
 
-
   </head>
   <body>
+   <div class="base container-fluid">
     {% block content %}{% endblock %}
+   </div>
 
     <!-- start js  -->
     <script src="/static/jquery/jquery-2.2.3.min.js"></script>

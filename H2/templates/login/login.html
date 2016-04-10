@@ -1,5 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-login
+<div class="login_content col-md-12">
+    <form class="form-horizontal col-md-8">
+      <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+        <div class="col-sm-10">
+          <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox">记住
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-default submit">注册</button>
+        </div>
+      </div>
+    </form>
+</div>
 {% endblock%}
+
+{% block js %}
+<script type="text/javascript">
+    $(".btn").click(function(){
+        var email = $("input[type='email']").val();
+        var password = $("input[type='password']").val();
+        xlog(email);
+        xlog(password);
+
+
+    });
+</script>
+{% endblock %}

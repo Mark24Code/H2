@@ -1,18 +1,30 @@
 {% extends "content_base.html" %}
 
 {% block content-panel %}
-<div class="xui-content-panel col-md-offset-2">
-    <div class="xui-editor col-md-10">
+<div class="xui-content-panel">
+    <div class="xui-editor">
         <div class="row xui-i-title ">
             <input type="text" class="form-control" placeholder="Text input">
         </div>
-        <div class="row xui-i-content">
-            <textarea class="form-control" rows="10"></textarea>
+        <div class="row xui-i-editor">
+            <input type="file" id="uploader-pic"></input>
+            <script id="ueditor" name="content" type="text/plain">
+            </script>
         </div>
     </div>
-    <div class="row btn-panel col-md-12">
+    <div class="row btn-panel">
         <button type="button" class="btn btn-default">取消</button>
         <button type="button" class="btn btn-primary">保存</button>
     </div>
 </div>
+{% endblock %}
+{% block js %}
+
+<script type="text/javascript">
+    var ue = UE.getEditor('ueditor',{
+        toolbars:[
+            ['fullscreen','uiName']
+        ]
+    });
+</script>
 {% endblock %}

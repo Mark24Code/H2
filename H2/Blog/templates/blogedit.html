@@ -7,8 +7,13 @@
             <input type="text" class="form-control" placeholder="Text input">
         </div>
         <div class="row xui-i-editor">
-            <input type="file" id="upyunUploader-Btn"></input>
-            <script id="ueditor" name="content" type="text/plain">
+            <div id="upload-container">
+                <ul id="filelist"></ul>
+                <input type="file" id="upf"></input>
+                <a id="pickfiles">[选择文件]</a>
+                <a id="uploadfiles">[点击上传]</a>
+            </div>
+            <script id="editor" name="content" type="text/plain">
             </script>
         </div>
     </div>

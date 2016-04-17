@@ -1,10 +1,16 @@
+//========================================
+
+var btn_id = "#pickfiles";//按钮id
+
 //button是类型名(系统)，editor是系统传入的实例(系统)，uiName是自定义组件名
 UE.registerUI('button',function(editor,uploaderBtn){
     //注册按钮执行时的command命令，使用命令默认就会带有回退操作
     //使用editor名字空间，捆绑一个命令 uploaderBtn --> execCMD:function(){...}
     editor.registerCommand(uploaderBtn,{
         execCommand:function(){
-            $('#upyunUploader-Btn').click();
+            console.log('sffffffffffffffffff');
+            console.log('#pickfiles');
+            $("#pickfiles").trigger("click");
         }
     });
 
@@ -27,3 +33,13 @@ UE.registerUI('button',function(editor,uploaderBtn){
     //因为你是添加button,所以需要返回这个button
     return btn;
 }/*index 指定添加到工具栏上的那个位置，默认时追加到最后,editorId 指定这个UI是那个编辑器实例上的，默认是页面上所有的编辑器都会添加这个按钮*/);
+
+
+// //并列绑定，File值触发，触发请求
+// $(btn_id).change(function(){
+//     console.log($(btn_id).val());
+//     // UE.getEditor('editor').setContent('ssss');//可以访问到
+// });
+
+
+

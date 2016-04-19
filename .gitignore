@@ -2,3 +2,4 @@
 *.pyc
 /migrations
 H2/.idea/
+.idea/

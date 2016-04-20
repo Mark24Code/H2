@@ -1,16 +1,14 @@
 {% extends "base.html" %} {% block css %}
 <style type="text/css">
-/*.vertical-center{
+.vertical-center{
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}*/
+  top: 25%;
+}
 </style>
 {% endblock %} {% block content %}
 <div class="container-fluid">
-    <div class="row xui-login vertical-center">
-        <div class="panel panel-default col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 ">
+    <div class="row xui-login">
+        <div class="panel panel-default col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 vertical-center">
             <div class="panel-body">
                 <form class="form-horizontal">
                     <div class="form-group">
@@ -45,4 +43,12 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+
+</script>
+
 {% endblock %}

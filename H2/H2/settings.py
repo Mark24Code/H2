@@ -120,5 +120,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,'static'),
+    os.path.join(BASE_DIR,'static/'),
     )
+
+
+# 私人定制属性
+
+### account type 基于角色的用户管理
+H2_ROLES = ('SUPER','MANAGET','USER')

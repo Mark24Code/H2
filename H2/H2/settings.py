@@ -124,7 +124,10 @@ STATICFILES_DIRS = (
     )
 
 
-# 私人定制属性
+# H2 Projects
 
+### 登录校验
+# LOGIN_URL = '/login/'
+SESSION_COOKIE_AGE = 5 * 24 * 3600 #one week
 ### account type 基于角色的用户管理
 H2_ROLES = ('SUPER','MANAGET','USER')

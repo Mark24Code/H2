@@ -26,6 +26,7 @@
                             <li><a href="#">Separated link</a></li>
                         </ul>
                     </li>
+                    <li><a>欢迎 {{ request.user.username }} </a></li>
                     <li>
                         <a href={% url 'logout' %} >
                         <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
@@ -50,3 +51,4 @@
     </div>
 </div>
 {% endblock %}
+

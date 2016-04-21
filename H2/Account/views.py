@@ -9,10 +9,17 @@ from django.http import JsonResponse
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.core.urlresolvers import reverse
 
 from core import jsonresponse
 from Account.models import UserProfile
+
+def index(request):
+    """
+    首页
+    """
+    return render_to_response('index.html',{})
 
 
 def login(request):
@@ -68,8 +75,8 @@ def user_router(user):
     角色跳转
     """
     if user.is_superuser:
-        return "/"
+        return "/blogs/"
     else:
-        return "/"
+        return "/blogs/"
 
 

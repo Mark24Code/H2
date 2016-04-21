@@ -1,38 +1,23 @@
-{% extends "content_base.html" %}
+{% extends "base.html" %} {% block css %}
+<style type="text/css">
+.vertical-center{
+  position: absolute;
+  top: 25%;
+}
+.xui-hide{
+    display: none;
+}
+</style>
+{% endblock %}
 
-{% block content_base %}
-<div class="row col-md-12 col-sm-12 xui-content-row">
-    <div class="col-md-7 col-md-offset-1 xui-leftbox">
-        <div class="row">
-            <div class="panel panel-default col-md-12">
-                <div class="panel-body">
-                    Blog List
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 col-md-offset-1 xui-rightbox">
-        <div class="row xui-userinfo">
-            <div class="panel panel-default col-md-12">
-                <div class="panel-body">
-                    User Info
-                </div>
-            </div>
-        </div>
-        <div class="row xui-writeblog">
-            <div class="panel panel-default col-md-12">
-                <div class="panel-body">
-                    write blog
-                </div>
-            </div>
-        </div>
-        <div class="row xui-infotips">
-            <div class="panel panel-default col-md-12">
-                <div class="panel-body">
-                    Tips
-                </div>
-            </div>
-        </div>
-    </div>
+{% block content %}
+<div class="container-fluid">
+    <a class="btn btn-primary xa-login" href={% url 'login' %}>登录</a>
 </div>
-{% endblock%}
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

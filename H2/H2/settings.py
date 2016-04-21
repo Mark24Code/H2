@@ -127,7 +127,9 @@ STATICFILES_DIRS = (
 # H2 Projects
 
 ### 登录校验
-LOGIN_URL = '/login/'#自定义auth验证失败跳转
+
+#自定义auth验证失败跳转
+LOGIN_URL = '/login/'
 
 SESSION_COOKIE_AGE = 5 * 24 * 3600 #one week
 

@@ -73,9 +73,3 @@ def user_router(user):
         return "/"
 
 
-@login_required()
-def index(request):
-    """
-    首页
-    """
-    return render_to_response('index.html',{})

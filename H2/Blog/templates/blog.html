@@ -1,25 +1,38 @@
 {% extends "content_base.html" %}
 
-{% block css %}
-<style type="text/css">
-
-</style>
-{% endblock %}
-{% block content-panel %}
-
-<!-- <div class="sidebar col-md-2">
-    <ul class="nav nav-pills nav-stacked ">
-      <li role="presentation" class="active"><a href="#">Home</a></li>
-      <li role="presentation"><a href="#">Profile</a></li>
-      <li role="presentation"><a href="#">Messages</a></li>
-    </ul>
-</div> -->
-
-<div class="xui-content-panel col-md-offset-2">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        Basic panel example
-      </div>
+{% block content_base %}
+<div class="row col-md-12 col-sm-12 xui-content-row">
+    <div class="col-md-7 col-md-offset-1 xui-leftbox">
+        <div class="row">
+            <div class="panel panel-default col-md-12">
+                <div class="panel-body">
+                    Blog List
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-md-offset-1 xui-rightbox">
+        <div class="row xui-userinfo">
+            <div class="panel panel-default col-md-12">
+                <div class="panel-body">
+                    User Info
+                </div>
+            </div>
+        </div>
+        <div class="row xui-writeblog">
+            <div class="panel panel-default col-md-12">
+                <div class="panel-body">
+                    write blog
+                </div>
+            </div>
+        </div>
+        <div class="row xui-infotips">
+            <div class="panel panel-default col-md-12">
+                <div class="panel-body">
+                    Tips
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-{% endblock %}
+{% endblock%}

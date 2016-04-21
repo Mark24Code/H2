@@ -34,8 +34,8 @@
                     </div>
                     <div class="form-group">
                         <ul class="col-sm-offset-2 col-sm-10">
-                            <li class="btn btn-default xa-register">注册</li>
-                            <li class="btn btn-primary xa-login">登录</li>
+                            <a class="btn btn-default xa-register">注册</a>
+                            <a class="btn btn-primary xa-login">登录</a>
                         </ul>
                     </div>
                 </form>
@@ -50,6 +50,8 @@
 <script type="text/javascript">
 //注册
 $('.xa-register').click(function() {
+    console.log('@@@@@@@@@@@@@@');
+    console.log('xa-register');
     var username = $('#in_username').val();
     var password = $('#in_password').val();
     $.ajax({
@@ -61,7 +63,8 @@ $('.xa-register').click(function() {
             'password':password
         },
         success:function(data,status){
-            xlog(data.code);
+            console.log('POST Success');
+            // xlog(data.code);
             // if(data.code==200){
             //     console.log('Create Success');
             // }else{
@@ -69,15 +72,18 @@ $('.xa-register').click(function() {
             // }
         },
         error:function(data,status){
-            xlog('error');
-            xlog(data);
-            xlog(status);
+            console.log('POST Fail');
+            // xlog('error');
+            // xlog(data);
+            // xlog(status);
         }
     });
 });
 
 //登录
 $('.xa-login').click(function() {
+    console.log('@@@@@@@@@@@@@@');
+    console.log('xa-login');
     var username = $('#in_username').val();
     var password = $('#in_password').val();
     $.ajax({
@@ -89,7 +95,8 @@ $('.xa-login').click(function() {
             'password':password
         },
         success:function(data,status){
-            xlog(data.code);
+            console.log('POST Success');
+            // xlog(data.code);
             // if(data.code==200){
             //     console.log('Create Success');
             // }else{
@@ -97,9 +104,10 @@ $('.xa-login').click(function() {
             // }
         },
         error:function(data,status){
-            xlog('error');
-            xlog(data);
-            xlog(status);
+            console.log('POST Fail');
+            // xlog('error');
+            // xlog(data);
+            // xlog(status);
         }
     });
 });

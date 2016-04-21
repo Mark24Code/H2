@@ -4,6 +4,9 @@
   position: absolute;
   top: 25%;
 }
+.xui-hide{
+    display: none;
+}
 </style>
 {% endblock %} {% block content %}
 <div class="container-fluid">
@@ -40,6 +43,7 @@
                     </div>
                 </form>
             </div>
+            <span class="label xui-hide xa-login_msg"></span>
         </div>
     </div>
 </div>
@@ -48,10 +52,9 @@
 {% block js %}
 
 <script type="text/javascript">
+$label = $('.xui-login .label.xa-login_msg');
 //注册
 $('.xa-register').click(function() {
-    console.log('@@@@@@@@@@@@@@');
-    console.log('xa-register');
     var username = $('#in_username').val();
     var password = $('#in_password').val();
     $.ajax({
@@ -62,28 +65,29 @@ $('.xa-register').click(function() {
             'username':username,
             'password':password
         },
-        success:function(data,status){
-            console.log('POST Success');
-            // xlog(data.code);
-            // if(data.code==200){
-            //     console.log('Create Success');
-            // }else{
-            //     console.log('Create Fail:500');
-            // }
+        success:function(resp){
+            console.log(resp);
+            if(resp.code==200){
+                console.log('创建账户成功！');
+                var data = resp.data;
+                // if(data.url){
+                //     window.location.href=data.url;
+                // }
+                $label.html('创建账户成功！请登录').addClass('label-success').removeClass('xui-hide');
+            }else{
+                console.log('创建账户失败！');
+                $label.html('创建账户失败！').addClass('label-danger').removeClass('xui-hide');
+            }
         },
-        error:function(data,status){
-            console.log('POST Fail');
-            // xlog('error');
-            // xlog(data);
-            // xlog(status);
+        error:function(resp){
+            console.log('连接服务器失败，请重试！');
+            $label.html('连接服务器失败，请重试！').addClass('label-danger').removeClass('xui-hide');
         }
     });
 });
 
 //登录
 $('.xa-login').click(function() {
-    console.log('@@@@@@@@@@@@@@');
-    console.log('xa-login');
     var username = $('#in_username').val();
     var password = $('#in_password').val();
     $.ajax({
@@ -94,20 +98,23 @@ $('.xa-login').click(function() {
             'username':username,
             'password':password
         },
-        success:function(data,status){
-            console.log('POST Success');
-            // xlog(data.code);
-            // if(data.code==200){
-            //     console.log('Create Success');
-            // }else{
-            //     console.log('Create Fail:500');
-            // }
+        success:function(resp){
+           if(resp.code==200){
+                console.log('验证成功！');
+                $label.html('验证成功！').addClass('label-success').removeClass('xui-hide');
+                var data = resp.data;
+                if(data.url){
+                    window.location.href=data.url;
+                }
+            }else{
+                console.log('创建账户失败！');
+                $label.html('创建账户失败！').addClass('label-danger').removeClass('xui-hide');
+            }
         },
-        error:function(data,status){
-            console.log('POST Fail');
-            // xlog('error');
-            // xlog(data);
-            // xlog(status);
+        error:function(resp){
+            console.log('连接服务器失败，请重试！');
+            $label.html('连接服务器失败，请重试！').addClass('label-danger').removeClass('xui-hide');
+
         }
     });
 });

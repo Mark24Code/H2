@@ -59,12 +59,8 @@ def logout(request):
     """
     del request.session['user_id']
     auth.logout(request)
-    data = {
-        'url':'/login/'
-    }
-    resp = jsonresponse.creat_response(200)
-    resp.data = data
-    return resp.get_response()
+
+    return render_to_response('logout.html',{})
 
 
 def user_router(user):
@@ -82,5 +78,4 @@ def index(request):
     """
     首页
     """
-    print('index')
     return render_to_response('index.html',{})

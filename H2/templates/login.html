@@ -62,11 +62,11 @@ $('.xa-register').click(function() {
         },
         success:function(data,status){
             xlog(data.code);
-            if(data.code==200){
-                console.log('Create Success');
-            }else{
-                console.log('Create Fail:500');
-            }
+            // if(data.code==200){
+            //     console.log('Create Success');
+            // }else{
+            //     console.log('Create Fail:500');
+            // }
         },
         error:function(data,status){
             xlog('error');

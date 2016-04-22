@@ -26,7 +26,13 @@
                             <li><a href="#">Separated link</a></li>
                         </ul>
                     </li>
-                    <li><a href={% url 'account' %}>欢迎 {{ request.user.username }} </a></li>
+                    <li><a href={% url 'account' %}>
+                        欢迎
+                        {% if profile.nickname %}
+                            {{profile.nickname}}
+                        {%else%}
+                            {{request.user.username}}
+                        {%endif%} </a></li>
                     <li>
                         <a href={% url 'logout' %} >
                         <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>

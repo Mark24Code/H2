@@ -26,7 +26,16 @@
         <div class="row xui-userinfo">
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
-                    用户名:{{request.user.username}}
+                    <div>
+                    {% if profile.nickname %}
+                        {{profile.nickname}}
+                    {%else%}
+                        {{request.user.username}}
+                    {%endif%}
+                    </div>
+                    <div>
+                        个性签名:{{profile.signature}}
+                    </div>
                 </div>
             </div>
         </div>

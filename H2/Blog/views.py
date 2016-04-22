@@ -23,6 +23,14 @@ def blogs(request):
     首页
     """
     user_id = str(request.user.id)
+
+    userprofile = UserProfile.objects.filter(user_id=user_id)
+    profile = {}
+    if userprofile:
+        userprofile = userprofile[0]
+        profile['nickname'] = userprofile.nickname
+        profile['signature'] = userprofile.signature
+
     datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
     items = []
     for data in datas:
@@ -35,6 +43,7 @@ def blogs(request):
             })
 
     c = RequestContext(request, {
+        'profile':profile,
         'items':items
     })
 

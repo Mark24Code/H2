@@ -79,7 +79,7 @@ def user_router(user):
     else:
         return "/blogs/"
 
-
+@login_required()
 def account(request):
     """
     用户个人资料

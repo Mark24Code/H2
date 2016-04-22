@@ -6,7 +6,7 @@ class Blog(models.Model):
     # belong_to = models.OneToOneField(User,null = True)#所属活动
     title = models.CharField(max_length=100)#标题
     content = models.TextField(blank = True, null = True)#内容
-    tag = models.CharField(max_length = 50, default="void")#分类
+    tag = models.CharField(max_length = 50, default="无分组")#分类
     created_at = models.DateTimeField(auto_now_add = True)#创建时间
     is_use = models.BooleanField(default=True)#逻辑删除
 

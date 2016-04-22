@@ -22,13 +22,21 @@ def blogs(request):
     """
     首页
     """
-    print(request.user)
-    print(request.user.username)
-    print(request.user.id)
-    print(request.user.password)
+    user_id = str(request.user.id)
+    datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
+    items = []
+    for data in datas:
+        items.append({
+            'blog_id':str(data.id),
+            'title':data.title,
+            'content':data.content,
+            'tag':data.tag,
+            'created_at':data.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+
     c = RequestContext(request, {
-        "username":request.user.username
-        })
+        'items':items
+    })
 
     return render_to_response('blogs.html',c)
 

@@ -80,3 +80,8 @@ def user_router(user):
         return "/blogs/"
 
 
+def profile(user):
+    """
+    用户个人资料
+    """
+    return render_to_response('profile.html',{})

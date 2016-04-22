@@ -8,7 +8,7 @@ import  mongoengine as mongo
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User,unique =True)
-    name = models.CharField(max_length=64, null=True)#昵称
+    nickname = models.CharField(max_length=64, null=True)#昵称
     account_type = models.CharField(max_length=10,default="USER")#账户类型
     avatar = models.URLField()#头像
     signature = models.CharField(max_length = 140, null=True)#签名

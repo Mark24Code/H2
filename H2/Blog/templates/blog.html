@@ -2,37 +2,55 @@
 
 {% block content_base %}
 <div class="row col-md-12 col-sm-12 xui-content-row">
-    <div class="col-md-7 col-md-offset-1 xui-leftbox">
-        <div class="row">
-            <div class="panel panel-default col-md-12">
-                <div class="panel-body">
-                    编辑 Blog 单页试图
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 col-md-offset-1 xui-rightbox">
-        <div class="row xui-userinfo">
-            <div class="panel panel-default col-md-12">
-                <div class="panel-body">
-                    User Info
-                </div>
-            </div>
-        </div>
-        <div class="row xui-writeblog">
-            <div class="panel panel-default col-md-12">
-                <div class="panel-body">
-                    <a href="">Write Blog</a>
-                </div>
-            </div>
-        </div>
-        <div class="row xui-infotips">
-            <div class="panel panel-default col-md-12">
-                <div class="panel-body">
-                    Tips
-                </div>
-            </div>
-        </div>
-    </div>
+ 写博客试图
+ <input id="blog_title" type="text" class="form-control xui-blog_title xa-blog_title" placeholder="标题">
+
+ <textarea id="blog_content" class="form-control xui-blog_content xa-blog_content" rows="3"></textarea>
+</div>
+
+<div class="form-group">
+    <ul class="col-sm-offset-2 col-sm-10">
+        <a class="btn btn-default xa-cancel" href={% url 'blogs' %}>取消</a>
+        <a class="btn btn-primary xa-save">保存</a>
+    </ul>
 </div>
 {% endblock%}
+
+
+{% block js %}
+
+<script type="text/javascript">
+//注册
+$('.xa-save').click(function() {
+    var blog_title = $('#blog_title').val();
+    var blog_content = $('#blog_content').val();
+    $.ajax({
+        url:'/blogs/blog/',
+        type:'post',
+        data:{
+            '_method':'put',
+            'blog_title':blog_title,
+            'blog_content':blog_content
+        },
+        success:function(resp){
+            console.log(resp);
+            if(resp.code==200){
+                console.log('创建博客成功！');
+                var data = resp.data;
+                if(data.url){
+                    window.location.href=data.url;
+                }
+            }else{
+                console.log('创建博客失败！');
+            }
+        },
+        error:function(resp){
+            console.log(resp);
+            console.log('连接服务器失败，请重试！');
+
+        }
+    });
+});
+</script>
+
+{% endblock %}

@@ -2,6 +2,12 @@ import json
 import copy
 from django.http import JsonResponse,HttpResponse
 
+def importtest():
+	print('>>>>>>>>>>>>')
+	print('import jsonresponse module success!')
+	print('<<<<<<<<<<<<<')
+
+
 class jsonResponse(object):
 	"""增强jsonResponse"""
 	def __init__(self):

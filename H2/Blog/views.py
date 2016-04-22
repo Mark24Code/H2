@@ -15,6 +15,7 @@ from django.core.urlresolvers import reverse
 
 from core import jsonresponse
 from Account.models import UserProfile
+from Blog.models import Blog
 
 @login_required()
 def blogs(request):
@@ -34,5 +35,25 @@ def blogs(request):
 
 @login_required()
 def blog(request):
-    return render_to_response('blog.html',{})
+    if request.POST.get('_method','') == 'put':
+        user_id = str(request.user.id)
+        blog_title = request.POST.get('blog_title','')
+        blog_content = request.POST.get('blog_content','')
+        blog = Blog(
+            user_id=user_id,
+            title=blog_title,
+            content=blog_content)
+        blog.save()
+        jsonresponse.importtest()
+        resp = jsonresponse.creat_response(200)
+        data = {
+            'url':'/blogs/'
+        }
+        resp.data = data
+        return resp.get_response()
+
+    elif request.POST.get('_method','') == 'post':
+        pass
+    else:
+        return render_to_response('blog.html',{})
 

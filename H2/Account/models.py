@@ -16,7 +16,11 @@ class UserProfile(models.Model):
     remark = models.TextField(max_length=256, null=True)#备注
     created_at = models.DateTimeField(auto_now_add=True, null=True)#创建时间
 
-    class Meta(object):
+    def __str__(self):
+        return self.name
+
+    class Meta:
         db_table = "account_user_profile"
         verbose_name = "用户资料"
+        ordering = ['-created_at']
 

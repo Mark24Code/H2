@@ -15,23 +15,21 @@
         <div class="row xui-userinfo">
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
-                    User Info
+                    用户名:{{request.user.username}}
                 </div>
             </div>
         </div>
         <div class="row xui-writeblog">
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
-                    request:[{{ request.user.username }}]
-                    user:[{{ username }}]
-                    write blog
+                <a href={% url 'blog' %}>写博客</a>
                 </div>
             </div>
         </div>
         <div class="row xui-infotips">
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
-                    Tips
+                    不知道方点啥
                 </div>
             </div>
         </div>

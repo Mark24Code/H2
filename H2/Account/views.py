@@ -28,8 +28,8 @@ def login(request):
     """
     #注册
     if request.POST.get('_method','') == 'put':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username','')
+        password = request.POST.get('password','')
         try:
             User.objects.create_user(username=username,password=password)
         except:
@@ -43,8 +43,8 @@ def login(request):
         return resp.get_response()
     #登录
     elif request.POST.get('_method','') == 'post':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username','')
+        password = request.POST.get('password','')
         user = auth.authenticate(username=username,password=password)
         if user and user.is_active:
             auth.login(request,user)

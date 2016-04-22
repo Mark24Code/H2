@@ -39,15 +39,17 @@ def blog(request):
         user_id = str(request.user.id)
         blog_title = request.POST.get('blog_title','')
         blog_content = request.POST.get('blog_content','')
+
         blog = Blog(
             user_id=user_id,
             title=blog_title,
             content=blog_content)
         blog.save()
-        jsonresponse.importtest()
+        blog_id = str(blog.id)
+
         resp = jsonresponse.creat_response(200)
         data = {
-            'url':'/blogs/'
+            'url':'/blogs/?id={user_id}&blog_id={blog_id}'.format(user_id=user_id,blog_id=blog_id)
         }
         resp.data = data
         return resp.get_response()
@@ -55,5 +57,7 @@ def blog(request):
     elif request.POST.get('_method','') == 'post':
         pass
     else:
+        # print('>>>>>>>>>>>>>>>>>>>')
+        # print(request.url)
         return render_to_response('blog.html',{})
 

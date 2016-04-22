@@ -80,8 +80,46 @@ def user_router(user):
         return "/blogs/"
 
 
-def profile(user):
+def account(request):
     """
     用户个人资料
     """
-    return render_to_response('profile.html',{})
+    if request.POST.get('_method','') == 'put':
+        user_id = str(request.user.id)
+        nickname = request.POST.get('nickname','')
+        signature = request.POST.get('signature','')
+        phone = request.POST.get('phone','')
+        remark = request.POST.get('remark','')
+        profile = UserProfile(
+            user_id=user_id,
+            nickname=nickname,
+            signature=signature,
+            phone=phone,
+            remark=remark)
+        profile.save()
+
+        resp = jsonresponse.creat_response(200)
+        data = {
+            'url':'/accounts/account/?id={user_id}'.format(user_id=user_id)
+        }
+        resp.data = data
+        return resp.get_response()
+
+    else:
+        user_id = str(request.user.id)
+        userprofile = UserProfile.objects.filter(user_id=user_id)
+        profile = {}
+        if userprofile:
+            userprofile = userprofile[0]
+            print(">>>>>>>>>>")
+            print(type(userprofile.remark))
+            print(userprofile.remark)
+            profile['nickname'] = userprofile.nickname
+            profile['signature'] = userprofile.signature
+            profile['phone'] = userprofile.phone
+            profile['remark'] = str(userprofile.remark)
+        c = RequestContext(request, {
+            'profile':profile
+        })
+
+        return render_to_response('account.html',c)

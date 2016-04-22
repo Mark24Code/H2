@@ -7,7 +7,7 @@ import  mongoengine as mongo
 #     pass
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User,unique =True)
+    user_id = models.CharField(default=0,max_length=100)#所属用户id
     nickname = models.CharField(max_length=64, null=True)#昵称
     account_type = models.CharField(max_length=10,default="USER")#账户类型
     avatar = models.URLField()#头像
@@ -17,7 +17,7 @@ class UserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)#创建时间
 
     def __str__(self):
-        return self.name
+        return self.nickname
 
     class Meta:
         db_table = "account_user_profile"

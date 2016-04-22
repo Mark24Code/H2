@@ -23,6 +23,7 @@ def dashboard(request):
     仪表盘
     """
     user_id = str(request.user.id)
+
     userprofile = UserProfile.objects.filter(user_id=user_id)
     profile = {}
     if userprofile:

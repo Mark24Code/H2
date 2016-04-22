@@ -33,7 +33,11 @@
 <div class="form-group">
     <ul class="col-sm-offset-2 col-sm-10">
         <a class="btn btn-default xa-cancel" href={% url 'blogs' %}>取消</a>
+        {% if profile %}
+        <a class="btn btn-primary xa-update">更新</a>
+        {% else %}
         <a class="btn btn-primary xa-save">保存</a>
+        {% endif %}
     </ul>
 </div>
 {% endblock%}
@@ -42,7 +46,7 @@
 {% block js %}
 
 <script type="text/javascript">
-//注册
+//保存
 $('.xa-save').click(function() {
     var nickname = $('#nickname').val();
     var signature = $('#signature').val();
@@ -68,6 +72,42 @@ $('.xa-save').click(function() {
                 }
             }else{
                 console.log('创建个人信息失败！');
+            }
+        },
+        error:function(resp){
+            console.log(resp);
+            console.log('连接服务器失败，请重试！');
+
+        }
+    });
+});
+
+//更新
+$('.xa-update').click(function() {
+    var nickname = $('#nickname').val();
+    var signature = $('#signature').val();
+    var phone = $('#phone').val();
+    var remark = $('#remark').val();
+    $.ajax({
+        url:'/accounts/account/',
+        type:'post',
+        data:{
+            '_method':'post',
+            'nickname':nickname,
+            'signature':signature,
+            'phone':phone,
+            'remark':remark
+        },
+        success:function(resp){
+            console.log(resp);
+            if(resp.code==200){
+                console.log('更新个人信息成功！');
+                var data = resp.data;
+                if(data.url){
+                    window.location.href=data.url;
+                }
+            }else{
+                console.log('更新个人信息失败！');
             }
         },
         error:function(resp){

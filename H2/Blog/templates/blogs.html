@@ -8,7 +8,7 @@
             {% for item in items %}
                 <div class="panel panel-default" id="{{item.blog_id}}">
                     <div class="panel-heading">
-                        标题：{{item.title}}
+                        标题：<a href="/blogs/blog/?id={{request.user.id}}&blog_id={{item.blog_id}}">{{item.title}}</a>
                     </div>
                     <div class="panel-body">
                         {{item.content}}
@@ -16,6 +16,7 @@
                     <div class="panel-footer">
                         创建于：{{item.created_at}}
                         {% if item.tag %} | 分类：{{item.tag}} {% endif %}
+                        | <a href="/blogs/blog/?id={{request.user.id}}&blog_id={{item.blog_id}}&edit=1">编辑</a>
                     </div>
                 </div>
             {% endfor %}

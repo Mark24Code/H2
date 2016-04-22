@@ -73,8 +73,33 @@ def blog(request):
 
     elif request.POST.get('_method','') == 'post':
         pass
+    elif request.GET.get('edit'):
+        user_id = request.GET.get('id','')
+        blog_id = request.GET.get('blog_id','')
+        blog_data = Blog.objects.filter(id=blog_id,user_id=user_id)
+        blog = {}
+        if blog_data:
+            blog_data = blog_data[0]
+            blog['title'] = blog_data.title
+            blog['content'] = blog_data.content
+        c = RequestContext(request, {
+            'blog':blog,
+        })
+        return render_to_response('blog.html',c)
+    elif request.GET.get('blog_id'):
+        user_id = request.GET.get('id','')
+        blog_id = request.GET.get('blog_id','')
+        blog_data = Blog.objects.filter(id=blog_id,user_id=user_id)
+        blog = {}
+        if blog_data:
+            blog_data = blog_data[0]
+            blog['title'] = blog_data.title
+            blog['content'] = blog_data.content
+        c = RequestContext(request, {
+            'blog':blog,
+            'frozen':True
+        })
+        return render_to_response('blog.html',c)
     else:
-        # print('>>>>>>>>>>>>>>>>>>>')
-        # print(request.url)
         return render_to_response('blog.html',{})
 

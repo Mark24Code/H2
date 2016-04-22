@@ -104,6 +104,26 @@ def account(request):
         }
         resp.data = data
         return resp.get_response()
+    if request.POST.get('_method','') == 'post':
+        user_id = str(request.user.id)
+        nickname = request.POST.get('nickname','')
+        signature = request.POST.get('signature','')
+        phone = request.POST.get('phone','')
+        remark = request.POST.get('remark','')
+        profile = UserProfile.objects.filter(user_id=user_id)
+        profile.update(
+            user_id=user_id,
+            nickname=nickname,
+            signature=signature,
+            phone=phone,
+            remark=remark)
+
+        resp = jsonresponse.creat_response(200)
+        data = {
+            'url':'/accounts/account/?id={user_id}'.format(user_id=user_id)
+        }
+        resp.data = data
+        return resp.get_response()
 
     else:
         user_id = str(request.user.id)

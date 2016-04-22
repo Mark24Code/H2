@@ -11,7 +11,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href={% url 'index' %}>H2</a>
+                <a class="navbar-brand" href={% url 'blogs' %}>H2</a>
             </div>
             <div class="collapse navbar-collapse" id="h2_navbar">
                 <ul class="nav navbar-nav navbar-right">
@@ -32,7 +32,13 @@
                             {{profile.nickname}}
                         {%else%}
                             {{request.user.username}}
-                        {%endif%} </a></li>
+                        {%endif%} </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    </li>
                     <li>
                         <a href={% url 'logout' %} >
                         <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
@@ -41,9 +47,11 @@
                 </ul>
                 <form class="navbar-form navbar-right" role="search">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" class="form-control" placeholder="搜点啥...">
+                        <a href={% url 'logout' %} >
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </a>
                     </div>
-                    <button type="submit" class="btn btn-default">搜搜</button>
                 </form>
             </div>
         </nav>

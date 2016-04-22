@@ -3,12 +3,12 @@
 {% block content_base %}
 <div class="row col-md-12 col-sm-12 xui-content-row">
  写博客试图
- <input id="blog_title" type="text" class="form-control xui-blog_title xa-blog_title" placeholder="标题">
+ <input id="blog_title" type="text" class="form-control xui-blog_title xa-blog_title" placeholder="标题" {% if blog %}value="{{ blog.title }}" {% endif %} {% if frozen %}disabled{% endif %}>
 
- <textarea id="blog_content" class="form-control xui-blog_content xa-blog_content" rows="3"></textarea>
+ <textarea id="blog_content" class="form-control xui-blog_content xa-blog_content" rows="3"  {% if frozen %}disabled{% endif %}>{% if blog %}{{ blog.content }}{% endif %}</textarea>
 </div>
 
-<div class="form-group">
+<div class="form-group  {% if frozen %}xui-hide{% endif %}">
     <ul class="col-sm-offset-2 col-sm-10">
         <a class="btn btn-default xa-cancel" href={% url 'blogs' %}>取消</a>
         <a class="btn btn-primary xa-save">保存</a>

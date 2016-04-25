@@ -1,8 +1,8 @@
 {% extends "content_base.html" %}
 
 {% block content_base %}
-<div class="row col-md-12 col-sm-12 xui-content-row">
-    <div class="col-md-7 col-md-offset-1 xui-leftbox">
+<div class="row col-md-11 col-sm-11 xui-content-row">
+    <div class="col-md-8 col-md-offset-1 xui-leftbox">
         <div class="row">
             <div id="blogs_handlebars_container" class="col-md-12 xui-panel_box"></div>
             <nav>
@@ -26,7 +26,7 @@
             </nav>
         </div>
     </div>
-    <div class="col-md-3 col-md-offset-1 xui-rightbox">
+    <div class="col-md-3 xui-rightbox">
         <div class="row xui-userinfo">
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
@@ -67,16 +67,15 @@
 <script id="blogs_list-template" type="text/x-handlebars-template">
 {{#each items}}
 <div class="panel panel-default" id="{{blog_id}}">
-    <div class="panel-heading">
-        标题：<a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}">{{title}}</a>
-    </div>
     <div class="panel-body">
-        {{content}}
+        标题：<a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}">{{title}}</a>
     </div>
     <div class="panel-footer">
         创建于：{{created_at}}
         {{#if tag}} | 分类：{{tag}} {{/if}}
-        | <a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}&edit=1">编辑</a>
+        | <a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}&edit=1">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
     </div>
 </div>
 {{/each}}

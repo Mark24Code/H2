@@ -119,7 +119,7 @@ def blog_api(request):
 
         resp = jsonresponse.creat_response(200)
         data = {
-            'url':'/blogs/?id={user_id}&blog_id={blog_id}'.format(user_id=user_id,blog_id=blog_id)
+            'url':'/blogs/?id={user_id}'.format(user_id=user_id)
         }
         resp.data = data
         return resp.get_response()

@@ -4,9 +4,7 @@
 <div class="row col-md-12 col-sm-12 xui-content-row">
     <div class="col-md-7 col-md-offset-1 xui-leftbox">
         <div class="row">
-            <div id="blogs_handlebars_container" class="col-md-12 xui-panel_box">
-
-            </div>
+            <div id="blogs_handlebars_container" class="col-md-12 xui-panel_box"></div>
         </div>
     </div>
     <div class="col-md-3 col-md-offset-1 xui-rightbox">
@@ -51,7 +49,7 @@
 {{#each items}}
     <div class="panel panel-default" id="{{blog_id}}">
         <div class="panel-heading">
-            标题：<a href="/blogs/blog/?id={{user_id}}&blog_id={{blog_id}}">{{title}}</a>
+            标题：<a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}">{{title}}</a>
         </div>
         <div class="panel-body">
             {{content}}
@@ -63,9 +61,10 @@
         </div>
     </div>
 {{/each}}
-
 </script>
 {% endverbatim %}
+
+
 <script type="text/javascript">
 var user_id = '{{request.user.id}}';
 var items = {{items|safe}};
@@ -74,8 +73,6 @@ var data = {items:items,user_id:user_id};
 var temple = $('#blogs_list-template').html();
 var compile_temple = Handlebars.compile(temple);
 var temple_html = compile_temple(data);
-
 $('#blogs_handlebars_container').html(temple_html);
-
 </script>
 {% endblock %}

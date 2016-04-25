@@ -23,7 +23,6 @@ def blogs(request):
     首页
     """
     user_id = str(request.user.id)
-
     userprofile = UserProfile.objects.filter(user_id=user_id)
     profile = {}
     if userprofile:
@@ -31,23 +30,33 @@ def blogs(request):
         profile['nickname'] = userprofile.nickname
         profile['signature'] = userprofile.signature
 
-    datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
-    items = []
-    for data in datas:
-        items.append({
-            'blog_id':str(data.id),
-            'title':data.title,
-            'content':data.content,
-            'tag':data.tag,
-            'created_at':data.created_at.strftime('%Y-%m-%d %H:%M:%S')
-            })
-
     c = RequestContext(request, {
-        'profile':profile,
-        # 'items':items
+        'profile':profile
     })
-
     return render_to_response('blogs.html',c)
+
+@login_required()
+def blogs_api(request):
+    if request.GET:
+        user_id = request.GET.get('user_id')
+        datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
+        items = []
+        for data in datas:
+            items.append({
+                'blog_id':str(data.id),
+                'title':data.title,
+                'content':data.content,
+                'tag':data.tag,
+                'created_at':data.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                })
+        resp = jsonresponse.creat_response(200)
+        data = {
+            'items':items
+        }
+        resp.data = data
+        return resp.get_response()
+
+
 
 
 @login_required()
@@ -104,17 +113,6 @@ def blog(request):
         return render_to_response('blog.html',{})
 
 @login_required()
-def blogs_api(request):
-    if request.POST:
-        print('>>>>>>>>')
-        print('blogs_api')
-        data = {}
-        return JsonResponse(data)
-
-    # if request.POST.get('_method','') == 'post':
-    #     pass
-
-@login_required()
 def blog_api(request):
-    data = {}
-    return JsonResponse(data)
+    print('<<<<')
+    return render_to_response('f.html',c)

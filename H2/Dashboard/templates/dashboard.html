@@ -1,7 +1,54 @@
 {% extends "content_base.html" %}
 
+{% block css %}
+
+<style type="text/css">
+    .pagination li a input.page{
+        width: 30px;
+        height: 20px;
+        border: 1px solid #ddd;
+    }
+</style>
+
+{% endblock %}
+
 {% block content_base %}
 <div class="row col-md-12 col-sm-12 xui-content-row">
 仪表盘
+
+
+
+<nav>
+  <ul class="pagination">
+    <li><a href="#">首页</a></li>
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#"><input class="page"></input> / 110 页</a></li>
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    <li><a href="#">末页</a></li>
+  </ul>
+</nav>
+
+
 </div>
 {% endblock%}
+
+{% block js %}
+
+<script type="text/javascript">
+
+</script>
+
+{% endblock %}

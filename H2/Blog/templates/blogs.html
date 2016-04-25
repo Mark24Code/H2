@@ -89,7 +89,6 @@ var user_id = '{{request.user.id}}';
 
 
 // API Data
-
 $(document).ready(function() {
     //blogs
     $.ajax({
@@ -115,6 +114,7 @@ $(document).ready(function() {
 });
 
 function get_blogs(data){
+    //耦合性过强，待整合，和搜索列表
     var items = data;
     var data = {items:items,user_id:user_id};
 

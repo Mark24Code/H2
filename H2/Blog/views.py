@@ -61,6 +61,50 @@ def blogs_api(request):
 
 @login_required()
 def blog(request):
+    user_id = str(request.user.id)
+    userprofile = UserProfile.objects.filter(user_id=user_id)
+    profile = {}
+    if userprofile:
+        userprofile = userprofile[0]
+        profile['nickname'] = userprofile.nickname
+        profile['signature'] = userprofile.signature
+
+    if request.GET.get('edit'):
+        user_id = request.GET.get('id','')
+        blog_id = request.GET.get('blog_id','')
+        blog_data = Blog.objects.filter(id=blog_id,user_id=user_id)
+        blog = {}
+        if blog_data:
+            blog_data = blog_data[0]
+            blog['title'] = blog_data.title
+            blog['content'] = blog_data.content
+        c = RequestContext(request, {
+            'blog':blog,
+            'profile':profile
+        })
+        return render_to_response('blog.html',c)
+    elif request.GET.get('blog_id'):
+        user_id = request.GET.get('id','')
+        blog_id = request.GET.get('blog_id','')
+        blog_data = Blog.objects.filter(id=blog_id,user_id=user_id)
+        blog = {}
+        if blog_data:
+            blog_data = blog_data[0]
+            blog['title'] = blog_data.title
+            blog['content'] = blog_data.content
+        c = RequestContext(request, {
+            'blog':blog,
+            'frozen':True,
+            'profile':profile
+        })
+        return render_to_response('blog.html',c)
+
+    c = RequestContext(request, {
+        'profile':profile
+    })
+    return render_to_response('blog.html',c)
+@login_required()
+def blog_api(request):
     if request.POST.get('_method','') == 'put':
         user_id = str(request.user.id)
         blog_title = request.POST.get('blog_title','')
@@ -81,38 +125,18 @@ def blog(request):
         return resp.get_response()
 
     elif request.POST.get('_method','') == 'post':
-        pass
-    elif request.GET.get('edit'):
-        user_id = request.GET.get('id','')
-        blog_id = request.GET.get('blog_id','')
-        blog_data = Blog.objects.filter(id=blog_id,user_id=user_id)
-        blog = {}
-        if blog_data:
-            blog_data = blog_data[0]
-            blog['title'] = blog_data.title
-            blog['content'] = blog_data.content
-        c = RequestContext(request, {
-            'blog':blog,
-        })
-        return render_to_response('blog.html',c)
-    elif request.GET.get('blog_id'):
-        user_id = request.GET.get('id','')
-        blog_id = request.GET.get('blog_id','')
-        blog_data = Blog.objects.filter(id=blog_id,user_id=user_id)
-        blog = {}
-        if blog_data:
-            blog_data = blog_data[0]
-            blog['title'] = blog_data.title
-            blog['content'] = blog_data.content
-        c = RequestContext(request, {
-            'blog':blog,
-            'frozen':True
-        })
-        return render_to_response('blog.html',c)
-    else:
-        return render_to_response('blog.html',{})
+        user_id = str(request.user.id)
+        blog_id = request.POST.get('blog_id',0)
+        blog_title = request.POST.get('blog_title','')
+        blog_content = request.POST.get('blog_content','')
 
-@login_required()
-def blog_api(request):
-    print('<<<<')
-    return render_to_response('f.html',c)
+        blog = Blog.objects.filter(id=blog_id,user_id=user_id)
+        blog.update(
+            title=blog_title,
+            content=blog_content)
+        resp = jsonresponse.creat_response(200)
+        data = {
+            'url':'/blogs/blog/?id={user_id}&blog_id={blog_id}'.format(user_id=user_id,blog_id=blog_id)
+        }
+        resp.data = data
+        return resp.get_response()

@@ -44,7 +44,7 @@ def blogs(request):
 
     c = RequestContext(request, {
         'profile':profile,
-        'items':items
+        # 'items':items
     })
 
     return render_to_response('blogs.html',c)
@@ -103,3 +103,18 @@ def blog(request):
     else:
         return render_to_response('blog.html',{})
 
+@login_required()
+def blogs_api(request):
+    if request.POST:
+        print('>>>>>>>>')
+        print('blogs_api')
+        data = {}
+        return JsonResponse(data)
+
+    # if request.POST.get('_method','') == 'post':
+    #     pass
+
+@login_required()
+def blog_api(request):
+    data = {}
+    return JsonResponse(data)

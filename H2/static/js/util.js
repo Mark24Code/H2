@@ -1,12 +1,6 @@
 H.util = {}
 
 
-H.util.xlog = function(msg){
-    console.log('>>>>>> log start >>>>>>');
-    console.log(msg);
-    console.log('<<<<<< log   end <<<<<<');
-}
-
 H.util.get_url_arg = function(name){
     if (name){
         var curr_search = location.search;

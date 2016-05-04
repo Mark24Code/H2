@@ -13,7 +13,7 @@ from django.template import RequestContext
 
 from django.core.urlresolvers import reverse
 
-from core import jsonresponse
+from core import jsonresponse,pagination
 from Account.models import UserProfile
 from Blog.models import Blog
 
@@ -40,6 +40,11 @@ def blogs_api(request):
     if request.GET:
         user_id = request.GET.get('user_id')
         datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
+        curr_page = request.GET.get('curr_page')
+        pageinfo = pagination.get_pageinfo(datas,currentPage=curr_page)
+
+        if curr_page:
+            pageinfo['currentPage'] = curr_page
         items = []
         for data in datas:
             items.append({
@@ -48,10 +53,11 @@ def blogs_api(request):
                 'content':data.content,
                 'tag':data.tag,
                 'created_at':data.created_at.strftime('%Y-%m-%d %H:%M:%S')
-                })
+            })
         resp = jsonresponse.creat_response(200)
         data = {
-            'items':items
+            'items':items,
+            'pageinfo':pageinfo
         }
         resp.data = data
         return resp.get_response()

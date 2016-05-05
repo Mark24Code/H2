@@ -12,8 +12,9 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from django.core.urlresolvers import reverse
-
-from core import jsonresponse,pagination
+from django.core.paginator import Paginator, PageNotAnInteger, InvalidPage, EmptyPage
+from django.conf import settings
+from core import jsonresponse
 from Account.models import UserProfile
 from Blog.models import Blog
 
@@ -39,12 +40,17 @@ def blogs(request):
 def blogs_api(request):
     if request.GET:
         user_id = request.GET.get('user_id')
-        datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
-        curr_page = request.GET.get('curr_page')
-        pageinfo = pagination.get_pageinfo(datas,currentPage=curr_page)
+        cur_page = request.GET.get('cur_page',1)
 
-        if curr_page:
-            pageinfo['currentPage'] = curr_page
+        datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
+        paged_datas = Paginator(datas,settings.COUNT_PER_PAGE)
+        cur_datas = paged_datas.page(cur_page)
+        datas = cur_datas.object_list
+
+        pageinfo = {
+            "totalPages":paged_datas.num_pages,
+            "currentPage":cur_page
+        }
         items = []
         for data in datas:
             items.append({

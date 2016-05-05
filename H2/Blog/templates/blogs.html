@@ -5,6 +5,7 @@
     <div class="col-md-8 col-md-offset-1 xui-leftbox">
         <div class="row">
             <div id="blogs_handlebars_container" class="col-md-12 xui-panel_box"></div>
+            <ul id="pagination" class="pagination"></ul>
         </div>
     </div>
 
@@ -45,6 +46,7 @@
 
 {% block js %}
 
+<!-- 模板 -->
 {% verbatim %}
 <script id="blogs_list-template" type="text/x-handlebars-template">
 {{#each items}}
@@ -61,10 +63,9 @@
     </div>
 </div>
 {{/each}}
-<ul id="pagination" class="pagination"></ul>
 </script>
 {% endverbatim %}
-
+<!-- 模板end -->
 
 <script type="text/javascript">
 var user_id = '{{request.user.id}}';
@@ -72,18 +73,12 @@ var user_id = '{{request.user.id}}';
 
 // API Data
 $(document).ready(function() {
-    display_blogs(user_id,1);
-});
-
-
-function display_blogs(user_id,curr_page= undefined ) {
-    //blogs
+    //get blogs data
     $.ajax({
         url:'/blogs/api/',
         type:'get',
         data:{
-            'user_id':user_id,
-            'curr_page':curr_page
+            'user_id':user_id
         },
         success:function(resp){
             console.log(resp);
@@ -91,6 +86,7 @@ function display_blogs(user_id,curr_page= undefined ) {
                 console.log('获取数据成功！');
                 var data = resp.data;
                 render_blogs(data);
+                render_pageinfo(data.pageinfo)
             }else{
                 console.log('获取数据失败！');
             }
@@ -99,11 +95,12 @@ function display_blogs(user_id,curr_page= undefined ) {
             console.log('连接服务器失败，请重试！');
         }
     });
-}
+});
+
+
 
 function render_blogs(data){
     //耦合性过强，待整合，和搜索列表
-    var pageinfo = data.pageinfo;
     var items = data.items;
     var data = {items:items,user_id:user_id};
 
@@ -111,20 +108,38 @@ function render_blogs(data){
     var compile_temple = Handlebars.compile(temple);
     var temple_html = compile_temple(data);
     $('#blogs_handlebars_container').html(temple_html);
-
-    render_pageinfo(pageinfo);
-
 }
 
 
 function render_pageinfo(pageinfo) {
     //pageinfo
     $("#pagination").jqPaginator({
-        totalPages: pageinfo.totalPages,
-        visiblePages: pageinfo.visiblePages,
-        currentPage: 1,
+        totalPages: pageinfo.totalPages || 0,
+        currentPage: pageinfo.currentPage || 1,
         onPageChange: function (num, type) {
             xlog('当前第' + num + '页');
+            $.ajax({
+                url:'/blogs/api/',
+                type:'get',
+                data:{
+                    'user_id':user_id,
+                    'cur_page':num
+                },
+                success:function(resp){
+                    console.log(resp);
+                    if(resp.code==200){
+                        console.log('获取数据成功！');
+                        var data = resp.data;
+                        render_blogs(data);
+                        render_pageinfo(data.pageinfo)
+                    }else{
+                        console.log('获取数据失败！');
+                    }
+                },
+                error:function(resp){
+                    console.log('连接服务器失败，请重试！');
+                }
+            });
         }
     });
 }

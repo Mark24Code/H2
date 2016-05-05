@@ -131,6 +131,7 @@ def account(request):
         profile = {}
         if userprofile:
             userprofile = userprofile[0]
+            profile['avatar'] = userprofile.avatar
             profile['nickname'] = userprofile.nickname
             profile['signature'] = userprofile.signature
             profile['phone'] = userprofile.phone

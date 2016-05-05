@@ -10,7 +10,7 @@ class UserProfile(models.Model):
     user_id = models.CharField(default=0,max_length=100)#所属用户id
     nickname = models.CharField(max_length=64, null=True)#昵称
     account_type = models.CharField(max_length=10,default="USER")#账户类型
-    avatar = models.URLField()#头像
+    avatar = models.URLField(default='/static/img/default_avatar.jpg')#头像
     signature = models.CharField(max_length = 140, null=True)#签名
     phone = models.CharField(max_length = 20, null=True)#手机
     remark = models.TextField(max_length=256, null=True)#备注

@@ -1,9 +1,45 @@
 {% extends "content_base.html" %}
-
+{% block css %}
+<style type="text/css">
+    .avatar_box,.avatar_box img{
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border-radius: 100px;
+    }
+    .avatar_box .avatar_mask.editable{
+        height: 35px;
+        line-height: 35px;
+        width:100%;
+        color:#fff;
+        text-align: center;
+        background-color: #000;
+        -moz-opacity:0.5; /*Firefox私有，透明度50%*/
+        opacity:0.5;/*其他，透明度50%*/
+        position: absolute;
+        bottom: 0px;
+    }
+    .xui-hide{
+        display: none;
+    }
+</style>
+{% endblock %}
 {% block content_base %}
 <div class="row col-md-12 col-sm-12 xui-content-row">
  account 界面
 <form class="form-horizontal">
+  <div class="form-group">
+    <label for="avatar" class="col-sm-2 control-label">头像</label>
+    <div class="col-sm-10">
+        <div class="avatar_box">
+            <img id="avatar" src="{{profile.avatar}}" alt="avatar">
+            <div id="avatar_mask" class="avatar_mask xui-hide">编辑</div>
+            <div class="xui-hide">
+                <input  id="avatar_file" name="avatar_file" type="file" value="{{profile.avatar}}">
+            </div>
+        </div>
+    </div>
+  </div>
   <div class="form-group">
     <label for="nickname" class="col-sm-2 control-label">昵称</label>
     <div class="col-sm-10">
@@ -116,6 +152,24 @@ $('.xa-update').click(function() {
 
         }
     });
+});
+
+//编辑头像
+$(".avatar_box").hover(
+    function(){
+        $(".avatar_box .avatar_mask")
+        .removeClass('xui-hide')
+        .addClass('editable')
+        .click(function(event) {
+            $("#avatar_file").click();
+        });;
+    },function(){
+        $(".avatar_box .avatar_mask").removeClass('editable').addClass('xui-hide');
+});
+
+$("input[name=avatar_file]").change(function(event) {
+    var new_avatar = $("input[name=avatar_file]").val();
+    console.log(new_avatar);
 });
 </script>
 

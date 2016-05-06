@@ -30,6 +30,7 @@ def blogs(request):
         userprofile = userprofile[0]
         profile['nickname'] = userprofile.nickname
         profile['signature'] = userprofile.signature
+        profile['avatar'] = userprofile.avatar
 
     c = RequestContext(request, {
         'profile':profile
@@ -39,21 +40,30 @@ def blogs(request):
 @login_required()
 def blogs_api(request):
     if request.GET:
+        print('>>>>> GET')
         user_id = request.GET.get('user_id')
         cur_page = request.GET.get('cur_page',1)
 
         datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
+
+        user_ids = [data.user_id for data in datas]
+        users = UserProfile.objects.filter(user_id__in = user_ids)
+        user_id2avatar = {}
+        for user in users:
+            user_id2avatar[str(user.user_id)] = str(user.avatar)
+
         paged_datas = Paginator(datas,settings.COUNT_PER_PAGE)
         cur_datas = paged_datas.page(cur_page)
         datas = cur_datas.object_list
 
         pageinfo = {
-            "totalPages":paged_datas.num_pages,
-            "currentPage":cur_page
+            "totalPages":int(paged_datas.num_pages),
+            "currentPage":int(cur_page)
         }
         items = []
         for data in datas:
             items.append({
+                'avatar':user_id2avatar[str(data.user_id)],
                 'blog_id':str(data.id),
                 'title':data.title,
                 'content':data.content,

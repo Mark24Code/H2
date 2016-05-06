@@ -1,5 +1,30 @@
 {% extends "content_base.html" %}
+{% block css %}
 
+<style type="text/css">
+    .avatarbox{
+        /*text-align: center;*/
+    }
+    .avatarbox img{
+        width: 80px;
+        height: 80px;
+        border-radius: 100px;
+    }
+    .xui-profile{
+        text-align: center;
+    }
+    .blog_avatarbox{
+        display: inline-block;
+        height: 100%;
+    }
+    .blog_avatarbox img{
+        width: 60px;
+        height:60px;
+        border-radius: 100px;
+    }
+</style>
+
+{% endblock %}
 {% block content_base %}
 <div class="row col-md-11 col-sm-11 xui-content-row">
     <div class="col-md-8 col-md-offset-1 xui-leftbox">
@@ -12,17 +37,20 @@
     <div class="col-md-3 xui-rightbox">
         <div class="row xui-userinfo">
             <div class="panel panel-default col-md-12">
-                <div class="panel-body">
-                    <div>
+                <div class="panel-body  xui-profile">
+                    <div class="avatarbox">
+                        <img src="{{profile.avatar}}" alt="avatar">
+                    </div>
+                    <h2>
                     {% if profile.nickname %}
                         {{profile.nickname}}
                     {%else%}
                         {{request.user.username}}
                     {%endif%}
-                    </div>
-                    <div>
+                    </h2>
+                    <h4>
                         个性签名:{{profile.signature}}
-                    </div>
+                    </h4>
                 </div>
             </div>
         </div>
@@ -50,16 +78,19 @@
 {% verbatim %}
 <script id="blogs_list-template" type="text/x-handlebars-template">
 {{#each items}}
-<div class="panel panel-default" id="{{blog_id}}">
-    <div class="panel-body">
-        标题：<a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}">{{title}}</a>
-    </div>
-    <div class="panel-footer">
-        创建于：{{created_at}}
-        {{#if tag}} | 分类：{{tag}} {{/if}}
-        | <a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}&edit=1">
-            <span class="glyphicon glyphicon-pencil"></span>
-        </a>
+<div class="col-md-12 xui-items">
+    <div class="col-md-offset-1 panel panel-default" id="{{blog_id}}">
+        <div class="panel-body">
+            <div class="col-md-1 blog_avatarbox"><img src="{{avatar}}" alt="avatar"></div>
+            标题：<a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}">{{title}}</a>
+        </div>
+        <div class="panel-footer xui-item_info">
+            创建于：{{created_at}}
+            {{#if tag}} | 分类：{{tag}} {{/if}}
+            | <a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}&edit=1">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </div>
     </div>
 </div>
 {{/each}}
@@ -83,10 +114,10 @@ $(document).ready(function() {
         success:function(resp){
             console.log(resp);
             if(resp.code==200){
-                console.log('获取数据成功！');
+                console.log('获取数据成功！GET页面');
                 var data = resp.data;
                 render_blogs(data);
-                render_pageinfo(data.pageinfo)
+                render_pageinfo(data.pageinfo);
             }else{
                 console.log('获取数据失败！');
             }
@@ -131,7 +162,7 @@ function render_pageinfo(pageinfo) {
                         console.log('获取数据成功！');
                         var data = resp.data;
                         render_blogs(data);
-                        render_pageinfo(data.pageinfo)
+                        // render_pageinfo(data.pageinfo)
                     }else{
                         console.log('获取数据失败！');
                     }

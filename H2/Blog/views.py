@@ -40,7 +40,6 @@ def blogs(request):
 @login_required()
 def blogs_api(request):
     if request.GET:
-        print('>>>>> GET')
         user_id = request.GET.get('user_id')
         cur_page = request.GET.get('cur_page',1)
 
@@ -66,7 +65,7 @@ def blogs_api(request):
                 'avatar':user_id2avatar[str(data.user_id)],
                 'blog_id':str(data.id),
                 'title':data.title,
-                'content':data.content,
+                'summary':data.content[:60],
                 'tag':data.tag,
                 'created_at':data.created_at.strftime('%Y-%m-%d %H:%M:%S')
             })

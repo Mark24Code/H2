@@ -49,6 +49,7 @@ INSTALLED_APPS = (
 
     'Account',
     'Blog',
+    'Square',
     'Comment',
     'Dashboard',
 )

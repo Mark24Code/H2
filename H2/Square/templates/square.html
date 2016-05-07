@@ -1,0 +1,95 @@
+{% extends "content_base.html" %}
+
+{% block content_base %}
+<div class="row col-md-12 col-sm-12 xui-content-row">
+ 写博客试图
+ <input id="blog_title" type="text" class="form-control xui-blog_title xa-blog_title" placeholder="标题" {% if blog %}value="{{ blog.title }}" {% endif %} {% if frozen %}disabled{% endif %}>
+
+ <textarea id="blog_content" class="form-control xui-blog_content xa-blog_content" rows="3"  {% if frozen %}disabled{% endif %}>{% if blog %}{{ blog.content }}{% endif %}</textarea>
+</div>
+
+<div class="form-group  {% if frozen %}xui-hide{% endif %}">
+    <ul class="col-sm-offset-2 col-sm-10">
+        <a class="btn btn-default xa-cancel" href={% url 'blogs' %}>取消</a>
+        {% if blog %}
+        <a class="btn btn-primary xa-update">更新</a>
+        {% else %}
+        <a class="btn btn-primary xa-save">保存</a>
+        {% endif %}
+    </ul>
+</div>
+{% endblock%}
+
+
+{% block js %}
+
+<script type="text/javascript">
+//注册
+$('.xa-save').click(function() {
+    var blog_title = $('#blog_title').val();
+    var blog_content = $('#blog_content').val();
+    $.ajax({
+        url:'/blogs/blog/api/',
+        type:'post',
+        data:{
+            '_method':'put',
+            'blog_title':blog_title,
+            'blog_content':blog_content
+        },
+        success:function(resp){
+            console.log(resp);
+            if(resp.code==200){
+                console.log('创建博客成功！');
+                var data = resp.data;
+                if(data.url){
+                    window.location.href=data.url;
+                }
+            }else{
+                console.log('创建博客失败！');
+            }
+        },
+        error:function(resp){
+            console.log(resp);
+            console.log('连接服务器失败，请重试！');
+
+        }
+    });
+});
+
+//更新
+$('.xa-update').click(function() {
+    var blog_title = $('#blog_title').val();
+    var blog_content = $('#blog_content').val();
+    var blog_id =
+    $.ajax({
+        url:'/blogs/blog/api/',
+        type:'post',
+        data:{
+            '_method':'post',
+            'blog_id':H.util.get_url_arg('blog_id'),
+            'blog_title':blog_title,
+            'blog_content':blog_content
+        },
+        success:function(resp){
+            console.log(resp);
+            if(resp.code==200){
+                console.log('更新博客成功！');
+                var data = resp.data;
+                if(data.url){
+                    window.location.href=data.url;
+                }
+            }else{
+                console.log('更新博客失败！');
+            }
+        },
+        error:function(resp){
+            console.log(resp);
+            console.log('连接服务器失败，请重试！');
+
+        }
+    });
+});
+
+</script>
+
+{% endblock %}

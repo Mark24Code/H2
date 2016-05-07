@@ -1,0 +1,209 @@
+{% extends "content_base.html" %}
+{% block css %}
+
+<style type="text/css">
+    .xui-item{
+        height: 12rem;
+        position: relative;
+    }
+    .xui-avatarbox{
+    }
+    .xui-avatarbox img{
+        width: 80px;
+        height: 80px;
+        border-radius: 100px;
+    }
+    .xui-blog_item{
+        padding: 10px 0;
+        height: 60px;
+        display: inline-block;
+    }
+
+    .xui-profile{
+        text-align: center;
+    }
+    .xui-blog_xui-avatarbox{
+        position: relative;
+        left: -35px;
+        top: -3rem;
+        display: inline-block;
+    }
+    .xui-blog_xui-avatarbox img{
+        width: 70px;
+        height:70px;
+        border-radius: 100px;
+    }
+    .xui-blog_summary{
+        color:#AAAAAA;
+    }
+    .xui-blog_info{
+        text-align: right;
+    }
+    .pagination{
+        padding-left: 10%;
+    }
+</style>
+
+{% endblock %}
+{% block content_base %}
+<div class="row col-md-11 col-sm-11 xui-content-row">
+    <div class="col-md-8 col-md-offset-1 xui-leftbox">
+        <div class="row">
+            <div id="blogs_handlebars_container" class="col-md-12 xui-panel_box"></div>
+            <ul id="pagination" class="pagination"></ul>
+        </div>
+    </div>
+
+    <div class="col-md-3 xui-rightbox">
+        <div class="row xui-userinfo">
+            <div class="panel panel-default col-md-12">
+                <div class="panel-body  xui-profile">
+                    <div class="xui-avatarbox">
+                        <img src="{{profile.avatar}}" alt="avatar">
+                    </div>
+                    <h2>
+                    {% if profile.nickname %}
+                        {{profile.nickname}}
+                    {%else%}
+                        {{request.user.username}}
+                    {%endif%}
+                    </h2>
+                    <h4>
+                        个性签名:{{profile.signature}}
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="row xui-ad">
+            <div class="panel panel-default col-md-12">
+                <div class="panel-body">
+                    广告招租
+                </div>
+            </div>
+        </div>
+        <div class="row xui-hots">
+            <div class="panel panel-default col-md-12">
+                <div class="panel-body">
+                    热门条目
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block js %}
+
+<!-- 模板 -->
+{% verbatim %}
+<script id="blogs_list-template" type="text/x-handlebars-template">
+{{#each items}}
+<div class="col-md-12 xui-items">
+    <div class="col-md-offset-1 panel panel-default xui-item" id="{{blog_id}}">
+        <div class="xui-blog_xui-avatarbox"><img src="{{avatar}}" alt="avatar"></div>
+        <div class="xui-blog_item">
+            <div class="xui-blog_title">
+                <a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}">
+                    <h4>{{title}}</h4>
+                </a>
+            </div>
+            <div class="xui-blog_summary"><h5>{{summary}}...</h5></div>
+            <div class="xui-blog_info">
+                <i>
+                    {{created_at}}
+                    {{#if tag}} | 分类：{{tag}} {{/if}}
+                    | <a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}&edit=1">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+</script>
+{% endverbatim %}
+<!-- 模板end -->
+
+<script type="text/javascript">
+var user_id = '{{request.user.id}}';
+
+
+// API Data
+$(document).ready(function() {
+    //get blogs data
+    $.ajax({
+        url:'/squares/api/',
+        type:'get',
+        data:{
+            'user_id':user_id
+        },
+        success:function(resp){
+            console.log(resp);
+            if(resp.code==200){
+                console.log('获取数据成功！GET页面');
+                var data = resp.data;
+                render_blogs(data);
+                render_pageinfo(data.pageinfo);
+            }else{
+                console.log('获取数据失败！');
+            }
+        },
+        error:function(resp){
+            console.log('连接服务器失败，请重试！');
+        }
+    });
+});
+
+
+
+function render_blogs(data){
+    //耦合性过强，待整合，和搜索列表
+    var items = data.items;
+    var data = {items:items,user_id:user_id};
+
+    var temple = $('#blogs_list-template').html();
+    var compile_temple = Handlebars.compile(temple);
+    var temple_html = compile_temple(data);
+    $('#blogs_handlebars_container').html(temple_html);
+}
+
+
+function render_pageinfo(pageinfo) {
+    //pageinfo
+    $("#pagination").jqPaginator({
+        totalPages: pageinfo.totalPages || 0,
+        currentPage: pageinfo.currentPage || 1,
+        onPageChange: function (num, type) {
+            xlog('当前第' + num + '页');
+            $.ajax({
+                url:'/squares/api/',
+                type:'get',
+                data:{
+                    'user_id':user_id,
+                    'cur_page':num
+                },
+                success:function(resp){
+                    console.log(resp);
+                    if(resp.code==200){
+                        console.log('获取数据成功！');
+                        var data = resp.data;
+                        render_blogs(data);
+                        // render_pageinfo(data.pageinfo)
+                    }else{
+                        console.log('获取数据失败！');
+                    }
+                },
+                error:function(resp){
+                    console.log('连接服务器失败，请重试！');
+                }
+            });
+        }
+    });
+}
+
+
+
+
+</script>
+{% endblock %}

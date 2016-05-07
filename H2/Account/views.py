@@ -31,7 +31,12 @@ def login(request):
         username = request.POST.get('username','')
         password = request.POST.get('password','')
         try:
-            User.objects.create_user(username=username,password=password)
+            user = User.objects.create_user(username=username,password=password)
+            profile = UserProfile(
+                user_id = str(user.id),
+                nickname = username
+                )
+            profile.save()
         except:
             traceback.print_exc()
 

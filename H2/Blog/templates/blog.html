@@ -57,9 +57,11 @@
 <div class="col-md-8 col-md-offset-2 xui-display_blog_comment">
 <hr>
 <div class="xui-like_box">
-    <a type="button" class="btn btn-default">
+    <button class="btn btn-success" id="FBtn">FF</button>
+<!--     <button class="btn btn-success xa-likebtn">
       <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 赞
-    </a>
+    </button>
+    <span class="xui-like_num">10</span> -->
 </div>
 <hr>
 <form class="form-horizontal">
@@ -116,6 +118,13 @@
 {% endverbatim %}
 <script type="text/javascript">
 $(document).ready(function(){
+    //点赞
+
+      // $("#FBtn").toggle(function(){
+      //   $("body").css("background-color","green");},
+      //   function(){
+      //   $("body").css("background-color","red");}
+      // );
     //获取评论列表
     $.ajax({
         url:'/comments/api/',
@@ -281,6 +290,8 @@ $(".xa-put_comment").click(function () {
     });
 
 });
+
+
 
 </script>
 

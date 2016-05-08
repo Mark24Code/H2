@@ -54,39 +54,36 @@
                 <form class="navbar-form navbar-right" role="search">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="搜点啥...">
-                        <a href={% url 'logout' %} >
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                        </a>
                     </div>
                 </form>
             </div>
         </nav>
     </div>
     {% if siderbar %}
-    <div class="list-group col-md-2">
+    <div class="list-group xa-siderbar col-md-2">
         <a  id="sider_stat"
             href={% url 'dashboard_stat' %}
-            class="list-group-item {%if siderbar_name == "sider_stat" %}active{% endif %}">
+            class="list-group-item xa-siderbar_item {%if siderbar_name == "sider_stat" %}active{% endif %}">
             统计
         </a>
         <a  id="sider_comments"
             href={% url 'dashboard_comments' %}
-            class="list-group-item {%if siderbar_name == "sider_comments" %}active{% endif %}">
+            class="list-group-item xa-siderbar_item {%if siderbar_name == "sider_comments" %}active{% endif %}">
             评论
         </a>
         <a  id="sider_blogs"
             href={% url 'dashboard_blogs' %}
-            class="list-group-item {%if siderbar_name == "sider_blogs" %}active{% endif %}">
+            class="list-group-item xa-siderbar_item {%if siderbar_name == "sider_blogs" %}active{% endif %}">
             管理博客
         </a>
         <a  id="sider_trash"
             href={% url 'dashboard_trash' %}
-            class="list-group-item {%if siderbar_name == "sider_trash" %}active{% endif %}">
+            class="list-group-item xa-siderbar_item {%if siderbar_name == "sider_trash" %}active{% endif %}">
             垃圾桶
         </a>
         <a  id="sider_filter"
             href={% url 'dashboard_filter' %}
-            class="list-group-item {%if siderbar_name == "sider_filter" %}active{% endif %}">
+            class="list-group-item xa-siderbar_item {%if siderbar_name == "sider_filter" %}active{% endif %}">
             智能过滤
         </a>
     </div>
@@ -99,5 +96,9 @@
         </footer>
     </div>
 </div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+</script>
 {% endblock %}
 

@@ -7,7 +7,6 @@ class Blog(models.Model):
     title = models.CharField(max_length=100)#标题
     content = models.TextField(blank = True, null = True)#内容
     tag = models.CharField(max_length = 50, default="无分组")#分类
-    like = models.BooleanField(default=False)#点赞
     created_at = models.DateTimeField(auto_now_add = True)#创建时间
     is_use = models.BooleanField(default=True)#逻辑删除
 

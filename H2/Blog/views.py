@@ -25,13 +25,18 @@ def blogs(request):
     首页
     """
     user_id = str(request.user.id)
-    userprofile = UserProfile.objects.filter(user_id=user_id)
     profile = {}
-    if userprofile:
-        userprofile = userprofile[0]
-        profile['nickname'] = userprofile.nickname
-        profile['signature'] = userprofile.signature
-        profile['avatar'] = userprofile.avatar
+    try:
+        userprofile = UserProfile.objects.filter(user_id=user_id)
+        if userprofile:
+            userprofile = userprofile[0]
+            profile['nickname'] = userprofile.nickname
+            profile['signature'] = userprofile.signature
+            profile['avatar'] = userprofile.avatar
+    except:
+        profile['nickname'] = "None"
+        profile["signature"] = "None"
+        profile["avatar"] = "None"
 
     c = RequestContext(request, {
         'profile':profile

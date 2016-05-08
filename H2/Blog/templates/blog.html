@@ -1,57 +1,61 @@
-{% extends "content_base.html" %}
-
-{% block css %}
-
+{% extends "content_base.html" %} {% block css %}
 <style type="text/css">
-    .xui-display_blog_info{
-        color:#808080;
+.xui-display_blog_info {
+    color: #808080;
+}
+
+.xui-display_blog_content {
+    padding-top: 2rem;
+}
+
+.span-liked {
+    color: #ee5397;
+}
+
+.xui-numstep {
+    opacity: 0
+}
+
+.move {
+    animation: move 2s;
+    -moz-animation: move 2s;
+    -webkit-animation: move 2s;
+    -o-animation: move 2s;
+}
+
+@keyframes move {
+    0% {
+        opacity: 1
     }
-    .xui-display_blog_content{
-        padding-top: 2rem;
+    25% {
+        opacity: 0.75
     }
-    .span-liked{
-        color: #ee5397;
+    50% {
+        opacity: 0.5
     }
-    .numstep{opacity: 0}
-    .move{
-        animation: move 2s;
-        -moz-animation: move 2s;
-        -webkit-animation: move 2s;
-        -o-animation: move 2s;
+    75% {
+        opacity: 0.25
     }
-    @keyframes move{
-        0%      {opacity: 1}
-        25%     {opacity: 0.75}
-        50%     {opacity: 0.5}
-        75%     {opacity: 0.25}
-        100%    {opacity: 0}
+    100% {
+        opacity: 0
     }
+}
 </style>
-
-{% endblock %}
-
-{% block content_base %}
-
+{% endblock %} {% block content_base %}
 <!-- create blog -->
 <div class="row col-md-12 col-sm-12 xui-content-row">
- 写博客试图
- <input id="blog_title" type="text" class="form-control {% if frozen %}xui-hide{% endif %} xui-blog_title xa-blog_title" placeholder="标题" {% if blog %}value="{{ blog.title }}" {% endif %}>
-
- <textarea id="blog_content" class="form-control  {% if frozen %}xui-hide{% endif %}  xui-blog_content xa-blog_content" rows="3"  {% if frozen %}disabled{% endif %}>{% if blog %}{{ blog.content }}{% endif %}</textarea>
+    写博客试图
+    <input id="blog_title" type="text" class="form-control {% if frozen %}xui-hide{% endif %} xui-blog_title xa-blog_title" placeholder="标题" {% if blog %}value="{{ blog.title }}" {% endif %}>
+    <textarea id="blog_content" class="form-control  {% if frozen %}xui-hide{% endif %}  xui-blog_content xa-blog_content" rows="3" {% if frozen %}disabled{% endif %}>{% if blog %}{{ blog.content }}{% endif %}</textarea>
 </div>
-
 <div class="form-group  {% if frozen %}xui-hide{% endif %}">
     <ul class="col-sm-offset-2 col-sm-10">
-        <a class="btn btn-default xa-cancel" href={% url 'blogs' %}>取消</a>
-        {% if blog %}
-        <a class="btn btn-primary xa-update">更新</a>
-        {% else %}
-        <a class="btn btn-primary xa-save">保存</a>
-        {% endif %}
+        <a class="btn btn-default xa-cancel" href={% url 'blogs' %}>取消</a> {% if blog %}
+        <a class="btn btn-primary xa-update">更新</a> {% else %}
+        <a class="btn btn-primary xa-save">保存</a> {% endif %}
     </ul>
 </div>
 <!-- create blog end -->
-
 <!-- display blog -->
 {% if frozen %}
 <h2 class="col-md-8 col-md-offset-2 xui-display_blog_title">
@@ -71,118 +75,126 @@
     {{blog.content}}
 </div>
 <div class="col-md-8 col-md-offset-2 xui-display_blog_comment">
-<hr>
-<div class="xui-like_box">
-    <!-- <button class="btn btn-success" id="FBtn">FF</button> -->
-    <button class="btn btn-default xa-likebtn" id="btn-like">
-      <span class="glyphicon glyphicon-heart" id="span-like" aria-hidden="true"></span> 赞
-      <span class="xui-like_num">10</span>
-    </button>
-    <span class="numstep numup">+1</span>
-    <span class="numstep numdown">-1</span>
+    <hr>
+    <div class="xui-like_box">
+        <!-- <button class="btn btn-success" id="FBtn">FF</button> -->
+        <button class="btn btn-default xa-likebtn" id="btn-like">
+            <span class="glyphicon glyphicon-heart" id="span-like" aria-hidden="true"></span> 赞
+            <span class="xui-like_num xa-like"></span>
+        </button>
+        <span class="xui-numstep xa-numup">+1</span>
+        <span class="xui-numstep xa-numdown">-1</span>
+    </div>
+    <hr>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="comment_nickname" class="col-sm-1 control-label">昵称</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="comment_nickname" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="comment_email" class="col-sm-1 control-label">Email</label>
+            <div class="col-sm-6">
+                <input type="email" class="form-control" id="comment_email" placeholder="Email">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="comment_content" class="col-sm-1 control-label">内容</label>
+            <div class="col-sm-6">
+                <textarea class="form-control" id="comment_content" rows="3"></textarea>
+            </div>
+        </div>
+    </form>
+    <a class="btn btn-primary xa-put_comment">提交评论</a>
 </div>
-<hr>
-<form class="form-horizontal">
-  <div class="form-group">
-    <label for="comment_nickname" class="col-sm-1 control-label">昵称</label>
-    <div class="col-sm-6">
-      <input type="text" class="form-control"id="comment_nickname" placeholder="">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="comment_email" class="col-sm-1 control-label">Email</label>
-    <div class="col-sm-6">
-      <input type="email" class="form-control" id="comment_email" placeholder="Email">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="comment_content" class="col-sm-1 control-label">内容</label>
-    <div class="col-sm-6">
-      <textarea class="form-control" id="comment_content" rows="3"></textarea>
-    </div>
-  </div>
-</form>
-<a class="btn btn-primary xa-put_comment">提交评论</a>
-</div>
-
 <div id="comments_handlebars_container"></div>
 <ul id="pagination" class="pagination"></ul>
-
 {% endif %}
 <!-- display blog  end -->
-
-{% endblock%}
-
-
-{% block js %}
-{% verbatim %}
+{% endblock%} {% block js %} {% verbatim %}
 <script id="comment_list-template" type="text/x-handlebars-template">
-<hr>
-<div class="xui-comment_list">
-    {{#each comment_list}}
-    <div class="col-md-8 col-md-offset-2 xui-display_blog_comment_list">
-        <b>{{nickname}}</b>
-        <p>
-            <em>{{mail}}</em>
-            <em>{{created_at}}</em>
-        </p>
-        <div>
-            <p> {{content}}</p>
+    <hr>
+    <div class="xui-comment_list">
+        {{#each comment_list}}
+        <div class="col-md-8 col-md-offset-2 xui-display_blog_comment_list">
+            <b>{{nickname}}</b>
+            <p>
+                <em>{{mail}}</em>
+                <em>{{created_at}}</em>
+            </p>
+            <div>
+                <p> {{content}}</p>
+            </div>
         </div>
+        {{/each}}
     </div>
-    {{/each}}
-</div>
 </script>
 {% endverbatim %}
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).ready(function() {
     //点赞
-
-      // $("#FBtn").toggle(function(){
-      //   $("body").css("background-color","green");},
-      //   function(){
-      //   $("body").css("background-color","red");}
-      // );
-      $("#btn-like").on("click", function(){
-        if($(".numstep").hasClass("move")){
-            $(".numstep").removeClass('move');
+    $("#btn-like").on("click", function() {
+        if ($(".xui-numstep").hasClass("move")) {
+            $(".xui-numstep").removeClass('move');
         }
-        if($("#span-like").hasClass('span-liked')){
+        if ($("#span-like").hasClass('span-liked')) {
             $("#span-like").removeClass('span-liked');
-            $(".numdown").addClass('move');
+            $(".xa-numdown").addClass('move');
             var num = parseInt($(".xui-like_num").html());
-            $(".xui-like_num").html(num-1);
+            $(".xui-like_num").html(num - 1);
         } else {
             $("#span-like").addClass('span-liked');
-            $(".numup").addClass('move');
+            $(".xa-numup").addClass('move');
             var num = parseInt($(".xui-like_num").html());
-            $(".xui-like_num").html(num+1);
+            $(".xui-like_num").html(num + 1);
         }
-      })
+    })
 
-    //获取评论列表
+    //获取点赞
     $.ajax({
-        url:'/comments/api/',
-        type:'get',
-        data:{
+        url: '/likes/like/api/',
+        type: 'get',
+        data: {
             'blog_id': H.util.get_url_arg('blog_id')
         },
-        success:function(resp){
+        success: function(resp) {
+            console.log(resp.data);
+            var like = resp.data.like;
+            $(".xa-like").html(like);
+        },
+        error: function(resp) {
+
+        }
+
+    });
+    //获取评论列表
+    $.ajax({
+        url: '/comments/api/',
+        type: 'get',
+        data: {
+            'blog_id': H.util.get_url_arg('blog_id')
+        },
+        success: function(resp) {
             console.log(resp.data);
             var data = resp.data;
             render_comments(data);
             render_pageinfo(data.pageinfo);
         },
-        error:function(resp){
-
+        error: function(resp) {
+            console.log('获得信息失败！');
         }
 
     });
+
+
 });
 
-function render_comments(data){
+function render_comments(data) {
     var comment_list = data.comment_list;
-    var data = {'comment_list':comment_list}
+    var data = {
+        'comment_list': comment_list
+    }
 
     var temple = $("#comment_list-template").html();
     var compile_temple = Handlebars.compile(temple);
@@ -195,27 +207,27 @@ function render_pageinfo(pageinfo) {
     $("#pagination").jqPaginator({
         totalPages: pageinfo.totalPages || 0,
         currentPage: pageinfo.currentPage || 1,
-        onPageChange: function (num, type) {
+        onPageChange: function(num, type) {
             xlog('当前第' + num + '页');
             $.ajax({
-                url:'/comments/api/',
-                type:'get',
-                data:{
-                    'blog_id':H.util.get_url_arg('blog_id'),
-                    'cur_page':num
+                url: '/comments/api/',
+                type: 'get',
+                data: {
+                    'blog_id': H.util.get_url_arg('blog_id'),
+                    'cur_page': num
                 },
-                success:function(resp){
+                success: function(resp) {
                     console.log(resp);
-                    if(resp.code==200){
+                    if (resp.code == 200) {
                         console.log('获取数据成功！');
                         var data = resp.data;
                         render_comments(data);
                         // render_pageinfo(data.pageinfo)
-                    }else{
+                    } else {
                         console.log('获取数据失败！');
                     }
                 },
-                error:function(resp){
+                error: function(resp) {
                     console.log('连接服务器失败，请重试！');
                 }
             });
@@ -228,26 +240,26 @@ $('.xa-save').click(function() {
     var blog_title = $('#blog_title').val();
     var blog_content = $('#blog_content').val();
     $.ajax({
-        url:'/blogs/blog/api/',
-        type:'post',
-        data:{
-            '_method':'put',
-            'blog_title':blog_title,
-            'blog_content':blog_content
+        url: '/blogs/blog/api/',
+        type: 'post',
+        data: {
+            '_method': 'put',
+            'blog_title': blog_title,
+            'blog_content': blog_content
         },
-        success:function(resp){
+        success: function(resp) {
             console.log(resp);
-            if(resp.code==200){
+            if (resp.code == 200) {
                 console.log('创建博客成功！');
                 var data = resp.data;
-                if(data.url){
-                    window.location.href=data.url;
+                if (data.url) {
+                    window.location.href = data.url;
                 }
-            }else{
+            } else {
                 console.log('创建博客失败！');
             }
         },
-        error:function(resp){
+        error: function(resp) {
             console.log(resp);
             console.log('连接服务器失败，请重试！');
 
@@ -260,27 +272,27 @@ $('.xa-update').click(function() {
     var blog_title = $('#blog_title').val();
     var blog_content = $('#blog_content').val();
     $.ajax({
-        url:'/blogs/blog/api/',
-        type:'post',
-        data:{
-            '_method':'post',
-            'blog_id':H.util.get_url_arg('blog_id'),
-            'blog_title':blog_title,
-            'blog_content':blog_content
+        url: '/blogs/blog/api/',
+        type: 'post',
+        data: {
+            '_method': 'post',
+            'blog_id': H.util.get_url_arg('blog_id'),
+            'blog_title': blog_title,
+            'blog_content': blog_content
         },
-        success:function(resp){
+        success: function(resp) {
             console.log(resp);
-            if(resp.code==200){
+            if (resp.code == 200) {
                 console.log('更新博客成功！');
                 var data = resp.data;
-                if(data.url){
-                    window.location.href=data.url;
+                if (data.url) {
+                    window.location.href = data.url;
                 }
-            }else{
+            } else {
                 console.log('更新博客失败！');
             }
         },
-        error:function(resp){
+        error: function(resp) {
             console.log(resp);
             console.log('连接服务器失败，请重试！');
 
@@ -288,7 +300,7 @@ $('.xa-update').click(function() {
     });
 });
 //评论
-$(".xa-put_comment").click(function () {
+$(".xa-put_comment").click(function() {
     var blog_id = H.util.get_url_arg('blog_id');
     var comment_nickname = $("input#comment_nickname").val();
     var comment_email = $("input#comment_email").val();
@@ -296,28 +308,28 @@ $(".xa-put_comment").click(function () {
     var comment_content = $("textarea#comment_content").val();
 
     $.ajax({
-        url:'/comments/comment/api/',
-        type:'post',
-        data:{
-            '_method':'put',
-            'blog_id':blog_id,
-            'comment_nickname':comment_nickname,
-            'comment_email':comment_email,
-            'comment_content':comment_content
+        url: '/comments/comment/api/',
+        type: 'post',
+        data: {
+            '_method': 'put',
+            'blog_id': blog_id,
+            'comment_nickname': comment_nickname,
+            'comment_email': comment_email,
+            'comment_content': comment_content
         },
-        success:function(resp){
+        success: function(resp) {
             console.log(resp);
-            if(resp.code==200){
+            if (resp.code == 200) {
                 console.log('创建评论成功！');
                 var data = resp.data;
-                if(data.url){
-                    window.location.href=data.url;
+                if (data.url) {
+                    window.location.href = data.url;
                 }
-            }else{
+            } else {
                 console.log('创建评论失败！');
             }
         },
-        error:function(resp){
+        error: function(resp) {
             console.log(resp);
             console.log('连接服务器失败，请重试！');
 
@@ -325,9 +337,5 @@ $(".xa-put_comment").click(function () {
     });
 
 });
-
-
-
 </script>
-
 {% endblock %}

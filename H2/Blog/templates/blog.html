@@ -9,7 +9,23 @@
     .xui-display_blog_content{
         padding-top: 2rem;
     }
-
+    .span-liked{
+        color: #ee5397;
+    }
+    .numstep{opacity: 0}
+    .move{
+        animation: move 2s;
+        -moz-animation: move 2s;
+        -webkit-animation: move 2s;
+        -o-animation: move 2s;
+    }
+    @keyframes move{
+        0%      {opacity: 1}
+        25%     {opacity: 0.75}
+        50%     {opacity: 0.5}
+        75%     {opacity: 0.25}
+        100%    {opacity: 0}
+    }
 </style>
 
 {% endblock %}
@@ -57,11 +73,13 @@
 <div class="col-md-8 col-md-offset-2 xui-display_blog_comment">
 <hr>
 <div class="xui-like_box">
-    <button class="btn btn-success" id="FBtn">FF</button>
-<!--     <button class="btn btn-success xa-likebtn">
-      <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 赞
+    <!-- <button class="btn btn-success" id="FBtn">FF</button> -->
+    <button class="btn btn-default xa-likebtn" id="btn-like">
+      <span class="glyphicon glyphicon-heart" id="span-like" aria-hidden="true"></span> 赞
+      <span class="xui-like_num">10</span>
     </button>
-    <span class="xui-like_num">10</span> -->
+    <span class="numstep numup">+1</span>
+    <span class="numstep numdown">-1</span>
 </div>
 <hr>
 <form class="form-horizontal">
@@ -125,6 +143,23 @@ $(document).ready(function(){
       //   function(){
       //   $("body").css("background-color","red");}
       // );
+      $("#btn-like").on("click", function(){
+        if($(".numstep").hasClass("move")){
+            $(".numstep").removeClass('move');
+        }
+        if($("#span-like").hasClass('span-liked')){
+            $("#span-like").removeClass('span-liked');
+            $(".numdown").addClass('move');
+            var num = parseInt($(".xui-like_num").html());
+            $(".xui-like_num").html(num-1);
+        } else {
+            $("#span-like").addClass('span-liked');
+            $(".numup").addClass('move');
+            var num = parseInt($(".xui-like_num").html());
+            $(".xui-like_num").html(num+1);
+        }
+      })
+
     //获取评论列表
     $.ajax({
         url:'/comments/api/',

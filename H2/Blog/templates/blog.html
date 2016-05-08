@@ -102,8 +102,10 @@
     {{#each comment_list}}
     <div class="col-md-8 col-md-offset-2 xui-display_blog_comment_list">
         <b>{{nickname}}</b>
-        <em>{{mail}}</em>
-        <em>{{created_at}}</em>
+        <p>
+            <em>{{mail}}</em>
+            <em>{{created_at}}</em>
+        </p>
         <div>
             <p> {{content}}</p>
         </div>
@@ -126,7 +128,6 @@ $(document).ready(function(){
             var data = resp.data;
             render_comments(data);
             render_pageinfo(data.pageinfo);
-
         },
         error:function(resp){
 
@@ -247,6 +248,7 @@ $(".xa-put_comment").click(function () {
     var blog_id = H.util.get_url_arg('blog_id');
     var comment_nickname = $("input#comment_nickname").val();
     var comment_email = $("input#comment_email").val();
+    console.log(comment_email);
     var comment_content = $("textarea#comment_content").val();
 
     $.ajax({

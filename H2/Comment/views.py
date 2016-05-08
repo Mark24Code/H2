@@ -40,6 +40,7 @@ def comments_api(request):
                 'blog_id':data.blog_id,
                 'nickname':data.nickname,
                 'mail':data.mail,
+                'content':data.content,
                 'created_at':data.created_at.strftime('%Y-%m-%d %H:%M:%S')
             })
         resp = jsonresponse.creat_response(200)
@@ -62,6 +63,7 @@ def comment_api(request):
         comment = Comment(
             blog_id=blog_id,
             nickname=comment_nickname,
+            mail=comment_email,
             content=comment_content)
         comment.save()
         comment_id = str(comment.id)

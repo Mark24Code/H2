@@ -5,3 +5,4 @@ H2/.idea/
 .idea/
 H2/Account/migrations/
 H2/Blog/migrations/
+H2/Comment/migrations/

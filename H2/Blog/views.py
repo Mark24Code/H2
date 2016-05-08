@@ -17,6 +17,7 @@ from django.conf import settings
 from core import jsonresponse
 from Account.models import UserProfile
 from Blog.models import Blog
+from Comment.models import Comment
 
 @login_required()
 def blogs(request):
@@ -89,8 +90,9 @@ def blog(request):
         userprofile = userprofile[0]
         profile['nickname'] = userprofile.nickname
         profile['signature'] = userprofile.signature
+        profile['avatar'] = userprofile.avatar
 
-    if request.GET.get('edit'):
+    if request.GET.get('edit') and request.GET.get('id') and request.GET.get('blog_id'):
         user_id = request.GET.get('id','')
         blog_id = request.GET.get('blog_id','')
         blog_data = Blog.objects.filter(id=blog_id,user_id=user_id)
@@ -99,20 +101,23 @@ def blog(request):
             blog_data = blog_data[0]
             blog['title'] = blog_data.title
             blog['content'] = blog_data.content
+            blog['created_at'] = blog_data.created_at.strftime('%Y-%m-%d %H:%M:%S')
         c = RequestContext(request, {
             'blog':blog,
             'profile':profile
         })
         return render_to_response('blog.html',c)
     elif request.GET.get('blog_id'):
-        user_id = request.GET.get('id','')
+        # user_id = request.GET.get('id','')
         blog_id = request.GET.get('blog_id','')
-        blog_data = Blog.objects.filter(id=blog_id,user_id=user_id)
+        blog_data = Blog.objects.filter(id=blog_id)
         blog = {}
         if blog_data:
             blog_data = blog_data[0]
             blog['title'] = blog_data.title
             blog['content'] = blog_data.content
+            blog['created_at'] = blog_data.created_at.strftime('%Y-%m-%d %H:%M:%S')
+
         c = RequestContext(request, {
             'blog':blog,
             'frozen':True,

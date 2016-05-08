@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^logout/$', account_views.logout,name='logout'),
     url(r'^accounts/', include('Account.urls')),
     url(r'^blogs/', include('Blog.urls')),
+    url(r'^comments/', include('Comment.urls')),
     url(r'^squares/', include('Square.urls')),
     url(r'^dashboard/', dashboard_views.dashboard,name='dashboard'),
 ]

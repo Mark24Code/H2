@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^blogs/', include('Blog.urls')),
     url(r'^comments/', include('Comment.urls')),
     url(r'^squares/', include('Square.urls')),
-    url(r'^dashboard/', dashboard_views.dashboard,name='dashboard'),
+    url(r'^dashboard/',include('Dashboard.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

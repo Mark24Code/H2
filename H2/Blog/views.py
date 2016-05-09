@@ -49,7 +49,7 @@ def blogs_api(request):
         user_id = request.GET.get('user_id')
         cur_page = request.GET.get('cur_page',1)
 
-        datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
+        datas = Blog.objects.filter(user_id=user_id,is_use=True).order_by('-created_at')
 
         user_ids = [data.user_id for data in datas]
         users = UserProfile.objects.filter(user_id__in = user_ids)

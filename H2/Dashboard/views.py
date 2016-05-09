@@ -11,6 +11,8 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, PageNotAnInteger, InvalidPage, EmptyPage
+from django.conf import settings
 from datetime import datetime,date, timedelta
 from collections import OrderedDict
 
@@ -99,13 +101,9 @@ def stat_api(request):
 
     # print("[",len(comment_count_list),"]comment_count_list:",comment_count_list)
     #like stat
-    print('blog_ids')
-    print(blog_ids)
     like_datas = Like.objects.filter(blog_id__in = blog_ids)
-    print(">>>>>Like")
-    print(like_datas)
-    print(">>>>>Like end")
     blog_id2like = {}
+
     for like in like_datas:
         blog_id = like.blog_id
         if blog_id in blog_id2like:
@@ -137,36 +135,13 @@ def stat_api(request):
         'like_count_list':like_count_list,
         'date_list':date_list
     }
-    print("data")
-    print(data)
     resp = jsonresponse.creat_response(200)
     resp.data = data
     return resp.get_response()
 
-
-def comments(request):
-    """评论"""
-    user_id = str(request.user.id)
-
-    userprofile = UserProfile.objects.filter(user_id=user_id)
-    profile = {}
-    if userprofile:
-        userprofile = userprofile[0]
-        profile['nickname'] = userprofile.nickname
-        profile['signature'] = userprofile.signature
-
-    c = RequestContext(request, {
-        'profile':profile,
-        'siderbar':True,
-        'siderbar_name':'sider_comments',
-    })
-
-    return render_to_response('dashboard_comments.html',c)
-
 def blogs(request):
     """博客管理"""
     user_id = str(request.user.id)
-
     userprofile = UserProfile.objects.filter(user_id=user_id)
     profile = {}
     if userprofile:
@@ -179,8 +154,78 @@ def blogs(request):
         'siderbar':True,
         'siderbar_name':'sider_blogs',
     })
-
     return render_to_response('dashboard_blogs.html',c)
+
+def blogs_api(request):
+    """博客管理数据"""
+    user_id = str(request.user.id)
+
+    if request.POST.get('_method','') == 'delete':
+        blog_id = request.POST.get('blog_id','')
+        try:
+            Blog.objects.filter(id=blog_id).update(is_use=False)
+        except:
+            traceback.print_exc()
+
+        cur_page = request.GET.get('cur_page', 1)
+
+        datas = Blog.objects.filter(id=user_id,is_use=True).order_by('-created_at')
+        paged_datas = Paginator(datas, settings.COUNT_PER_PAGE)
+        cur_datas = paged_datas.page(cur_page)
+        datas = cur_datas.object_list
+
+        pageinfo = {
+            "totalPages": int(paged_datas.num_pages),
+            "currentPage": int(cur_page)
+        }
+
+        items = []
+        for data in datas:
+            items.append({
+                'blog_id': str(data.id),
+                'title': data.title,
+                'summary': data.content[:60],
+                'tag': data.tag,
+                'created_at': data.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+        resp = jsonresponse.creat_response(200)
+        data = {
+            'items':items,
+            'pageinfo':pageinfo
+        }
+        resp.data = data
+        return resp.get_response()
+
+    else:
+        cur_page = request.GET.get('cur_page',1)
+
+        datas = Blog.objects.filter(user_id=user_id,is_use=True).order_by('-created_at')
+        paged_datas = Paginator(datas,settings.COUNT_PER_PAGE)
+        cur_datas = paged_datas.page(cur_page)
+        datas = cur_datas.object_list
+
+        pageinfo = {
+            "totalPages":int(paged_datas.num_pages),
+            "currentPage":int(cur_page)
+        }
+
+        items = []
+        for data in datas:
+            items.append({
+                'blog_id': str(data.id),
+                'title': data.title,
+                'summary': data.content[:60],
+                'tag': data.tag,
+                'created_at': data.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+        resp = jsonresponse.creat_response(200)
+        data = {
+            'items': items,
+            'pageinfo': pageinfo
+        }
+        resp.data = data
+        return resp.get_response()
+
 
 def trash(request):
     """垃圾桶"""
@@ -200,6 +245,26 @@ def trash(request):
     })
 
     return render_to_response('dashboard_trash.html',c)
+
+def comments(request):
+    """评论管理"""
+    user_id = str(request.user.id)
+
+    userprofile = UserProfile.objects.filter(user_id=user_id)
+    profile = {}
+    if userprofile:
+        userprofile = userprofile[0]
+        profile['nickname'] = userprofile.nickname
+        profile['signature'] = userprofile.signature
+
+    c = RequestContext(request, {
+        'profile':profile,
+        'siderbar':True,
+        'siderbar_name':'sider_comments',
+    })
+
+    return render_to_response('dashboard_comments.html',c)
+
 
 def filter(request):
     """过滤器"""

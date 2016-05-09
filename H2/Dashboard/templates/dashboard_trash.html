@@ -12,13 +12,145 @@
 <div class="row col-md-10 col-sm-12 xui-content-row">
 
 <div class="col-md-10">
-垃圾桶
+    <div class="row">
+        <div id="blogs_handlebars_container" class="col-md-12 xui-panel_box"></div>
+        <ul id="pagination" class="pagination"></ul>
+    </div>
 </div>
 </div>
 {% endblock%}
 
 {% block js %}
+<!-- 模板 -->
+{% verbatim %}
+<script id="blogs_list-template" type="text/x-handlebars-template">
+{{#each items}}
+<div class="col-md-12 xui-items">
+    <div class="col-md-offset-1 panel panel-default xui-item" id="{{blog_id}}">
+        <div class="xui-blog_item">
+            <div class="xui-blog_title">
+                <a href="/blogs/blog/?id={{../user_id}}&blog_id={{blog_id}}">
+                    <h4>{{title}}</h4>
+                </a>
+            </div>
+            <div class="xui-blog_summary"><h5>{{summary}}...</h5></div>
+            <div class="xui-blog_info">
+                <i>
+                    {{created_at}}
+                    {{#if tag}} | 分类：{{tag}} {{/if}}
+                    | <a class="xa-blog_delete" data-field="{{blog_id}}" onclick="undo_blog(this)">
+                        <span class="glyphicon glyphicon-repeat"></span>
+                    </a>
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+</script>
+{% endverbatim %}
+<!-- 模板end -->
+
 <script type="text/javascript">
+var user_id = '{{request.user.id}}';
+// API Data
+$(document).ready(function() {
+    //get blogs data
+    $.ajax({
+        url:'/dashboard/trash/api/',
+        type:'get',
+        data:{
+            'user_id':user_id
+        },
+        success:function(resp){
+            console.log(resp);
+            if(resp.code==200){
+                console.log('获取数据成功！GET页面');
+                var data = resp.data;
+                render_blogs(data);
+                render_pageinfo(data.pageinfo);
+            }else{
+                console.log('获取数据失败！');
+            }
+        },
+        error:function(resp){
+            console.log('连接服务器失败，请重试！');
+        }
+    });
+
+});
+
+function undo_blog(that){
+    var blog_id = $(that).attr("data-field");
+    $.ajax({
+        url:'/dashboard/trash/api/',
+        type:'post',
+        data:{
+            '_method':'undo',
+            'blog_id':blog_id
+        },
+        success:function(resp){
+            console.log(resp);
+            if(resp.code==200){
+                console.log('删除成功！GET页面');
+                var data = resp.data;
+                render_blogs(data);
+                render_pageinfo(data.pageinfo);
+            }else{
+                console.log('获取数据失败！');
+            }
+        },
+        error:function(resp){
+            console.log('连接服务器失败，请重试！');
+        }
+    });
+}
+
+function render_blogs(data){
+    //耦合性过强，待整合，和搜索列表
+    var items = data.items;
+    var data = {items:items,user_id:user_id};
+
+    var temple = $('#blogs_list-template').html();
+    var compile_temple = Handlebars.compile(temple);
+    var temple_html = compile_temple(data);
+    $('#blogs_handlebars_container').html(temple_html);
+}
+
+
+function render_pageinfo(pageinfo) {
+    //pageinfo
+    $("#pagination").jqPaginator({
+        totalPages: pageinfo.totalPages || 0,
+        currentPage: pageinfo.currentPage || 1,
+        onPageChange: function (num, type) {
+            xlog('当前第' + num + '页');
+            $.ajax({
+                url:'/dashboard/trash/api/',
+                type:'get',
+                data:{
+                    'user_id':user_id,
+                    'cur_page':num
+                },
+                success:function(resp){
+                    console.log(resp);
+                    if(resp.code==200){
+                        console.log('获取数据成功！');
+                        var data = resp.data;
+                        render_blogs(data);
+                        // render_pageinfo(data.pageinfo)
+                    }else{
+                        console.log('获取数据失败！');
+                    }
+                },
+                error:function(resp){
+                    console.log('连接服务器失败，请重试！');
+                }
+            });
+        }
+    });
+}
+
 
 </script>
 

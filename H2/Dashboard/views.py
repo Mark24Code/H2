@@ -139,6 +139,8 @@ def stat_api(request):
     resp.data = data
     return resp.get_response()
 
+
+@login_required()
 def blogs(request):
     """博客管理"""
     user_id = str(request.user.id)
@@ -156,6 +158,8 @@ def blogs(request):
     })
     return render_to_response('dashboard_blogs.html',c)
 
+
+@login_required()
 def blogs_api(request):
     """博客管理数据"""
     user_id = str(request.user.id)
@@ -168,7 +172,6 @@ def blogs_api(request):
             traceback.print_exc()
 
         cur_page = request.GET.get('cur_page', 1)
-
         datas = Blog.objects.filter(id=user_id,is_use=True).order_by('-created_at')
         paged_datas = Paginator(datas, settings.COUNT_PER_PAGE)
         cur_datas = paged_datas.page(cur_page)
@@ -195,18 +198,17 @@ def blogs_api(request):
         }
         resp.data = data
         return resp.get_response()
-
     else:
-        cur_page = request.GET.get('cur_page',1)
+        cur_page = request.GET.get('cur_page', 1)
 
-        datas = Blog.objects.filter(user_id=user_id,is_use=True).order_by('-created_at')
-        paged_datas = Paginator(datas,settings.COUNT_PER_PAGE)
+        datas = Blog.objects.filter(user_id=user_id, is_use=True).order_by('-created_at')
+        paged_datas = Paginator(datas, settings.COUNT_PER_PAGE)
         cur_datas = paged_datas.page(cur_page)
         datas = cur_datas.object_list
 
         pageinfo = {
-            "totalPages":int(paged_datas.num_pages),
-            "currentPage":int(cur_page)
+            "totalPages": int(paged_datas.num_pages),
+            "currentPage": int(cur_page)
         }
 
         items = []
@@ -227,6 +229,7 @@ def blogs_api(request):
         return resp.get_response()
 
 
+@login_required()
 def trash(request):
     """垃圾桶"""
     user_id = str(request.user.id)
@@ -246,6 +249,76 @@ def trash(request):
 
     return render_to_response('dashboard_trash.html',c)
 
+
+@login_required()
+def trash_api(request):
+    user_id = str(request.user.id)
+    if request.POST.get('_method', '') == 'undo':
+        blog_id = request.POST.get('blog_id', '')
+        try:
+            Blog.objects.filter(id=blog_id).update(is_use=True)
+        except:
+            traceback.print_exc()
+        cur_page = request.GET.get('cur_page', 1)
+
+        datas = Blog.objects.filter(user_id=user_id, is_use=False).order_by('-created_at')
+        paged_datas = Paginator(datas, settings.COUNT_PER_PAGE)
+        cur_datas = paged_datas.page(cur_page)
+        datas = cur_datas.object_list
+
+        pageinfo = {
+            "totalPages": int(paged_datas.num_pages),
+            "currentPage": int(cur_page)
+        }
+
+        items = []
+        for data in datas:
+            items.append({
+                'blog_id': str(data.id),
+                'title': data.title,
+                'summary': data.content[:60],
+                'tag': data.tag,
+                'created_at': data.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+        resp = jsonresponse.creat_response(200)
+        data = {
+            'items': items,
+            'pageinfo': pageinfo
+        }
+        resp.data = data
+        return resp.get_response()
+    elif request.GET:
+        cur_page = request.GET.get('cur_page', 1)
+        datas = Blog.objects.filter(user_id=user_id, is_use=False).order_by('-created_at')
+
+        paged_datas = Paginator(datas, settings.COUNT_PER_PAGE)
+        cur_datas = paged_datas.page(cur_page)
+        datas = cur_datas.object_list
+
+        pageinfo = {
+            "totalPages": int(paged_datas.num_pages),
+            "currentPage": int(cur_page)
+        }
+
+        items = []
+        for data in datas:
+            items.append({
+                'blog_id': str(data.id),
+                'title': data.title,
+                'summary': data.content[:60],
+                'tag': data.tag,
+                'created_at': data.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            })
+        resp = jsonresponse.creat_response(200)
+        data = {
+            'items': items,
+            'pageinfo': pageinfo
+        }
+        resp.data = data
+        return resp.get_response()
+
+
+@login_required()
 def comments(request):
     """评论管理"""
     user_id = str(request.user.id)
@@ -265,7 +338,11 @@ def comments(request):
 
     return render_to_response('dashboard_comments.html',c)
 
+@login_required()
+def comments_api(request):
+    pass
 
+@login_required()
 def filter(request):
     """过滤器"""
     user_id = str(request.user.id)
@@ -284,3 +361,7 @@ def filter(request):
     })
 
     return render_to_response('dashboard_filter.html',c)
+
+@login_required()
+def filter_api(request):
+    pass

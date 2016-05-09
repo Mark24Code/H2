@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^blogs/$', dashboard_views.blogs,name='dashboard_blogs'),
     url(r'^blogs/api/$', dashboard_views.blogs_api,name='dashboard_blogs_api'),
     url(r'^trash/$', dashboard_views.trash,name='dashboard_trash'),
+    url(r'^trash/api/$', dashboard_views.trash_api,name='dashboard_trash_api'),
     url(r'^filter/$', dashboard_views.filter,name='dashboard_filter')
 ]

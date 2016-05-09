@@ -43,7 +43,7 @@ def squares_api(request):
         user_id = request.GET.get('user_id')
         cur_page = request.GET.get('cur_page',1)
 
-        datas = Blog.objects.all().order_by('-created_at')
+        datas = Blog.objects.all().filter(is_use=True).order_by('-created_at')
 
         user_ids = [data.user_id for data in datas]
         users = UserProfile.objects.all()

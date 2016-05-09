@@ -6,7 +6,7 @@ class Like(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)#创建时间
 
     def __str__(self):
-        return "Like:= user_id:{},like_id:{}".format(self.user_id,self.like_id)
+        return "Like:= user_id:{},blog_id:{}".format(self.user_id,self.blog_id)
 
     class Meta:
         db_table = 'like'

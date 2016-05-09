@@ -143,11 +143,49 @@ $(document).ready(function() {
             $(".xa-numdown").addClass('move');
             var num = parseInt($(".xui-like_num").html());
             $(".xui-like_num").html(num - 1);
+
+
+            //赞-1
+            $.ajax({
+                url: '/likes/like/api/',
+                type: 'post',
+                data: {
+                    '_method': 'delete',
+                    'blog_id': H.util.get_url_arg('blog_id')
+                },
+                success: function(resp) {
+                    console.log(resp.data);
+                },
+                error: function(resp) {
+
+                }
+
+            });
+
         } else {
             $("#span-like").addClass('span-liked');
             $(".xa-numup").addClass('move');
             var num = parseInt($(".xui-like_num").html());
             $(".xui-like_num").html(num + 1);
+
+
+            //赞+1
+            $.ajax({
+                url: '/likes/like/api/',
+                type: 'post',
+                data: {
+                    '_method': 'put',
+                    'blog_id': H.util.get_url_arg('blog_id')
+                },
+                success: function(resp) {
+                    console.log(resp.data);
+                },
+                error: function(resp) {
+
+                }
+
+            });
+
         }
     })
 
@@ -159,9 +197,12 @@ $(document).ready(function() {
             'blog_id': H.util.get_url_arg('blog_id')
         },
         success: function(resp) {
-            console.log(resp.data);
             var like = resp.data.like;
+            var liked = resp.data.liked;
             $(".xa-like").html(like);
+            if (liked) {
+                $("#span-like").addClass('span-liked')
+            }
         },
         error: function(resp) {
 

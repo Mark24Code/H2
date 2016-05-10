@@ -332,7 +332,50 @@ def comments(request):
 
 @login_required()
 def comments_api(request):
-    pass
+    user_id = str(request.user.id)
+    print("NNNNNN")
+
+    blog_datas = Blog.objects.filter(user_id=user_id).order_by('-created_at')
+    blog_ids = [str(blog.id) for blog in blog_datas]
+    blog_id2blog = {}
+    for blog in blog_datas:
+        blog_id =str(blog.id)
+        blog_id2blog[blog_id] = blog
+
+    cur_page = request.GET.get('cur_page',1)
+    datas = Comment.objects.filter(blog_id__in=blog_ids).order_by('-created_at')
+    paged_datas = Paginator(datas,settings.COUNT_PER_PAGE)
+    cur_datas = paged_datas.page(cur_page)
+    comment_datas = cur_datas.object_list
+    print("CCC")
+    print(comment_datas)
+
+    pageinfo = {
+        "totalPages": int(paged_datas.num_pages),
+        "currentPage": int(cur_page)
+    }
+
+    items = []
+    for comment in comment_datas:
+        blog_id = comment.blog_id
+        items.append({
+            'comment_id':str(comment.id),
+            'comment_content':comment.content,
+            'created_at':comment.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'blog_id':comment.blog_id,
+            'blog_title':blog_id2blog[blog_id].title
+            })
+
+    resp = jsonresponse.creat_response(200)
+    data = {
+        'user_id':user_id,
+        'items':items,
+        'pageinfo':pageinfo
+    }
+    resp.data = data
+
+    return resp.get_response()
+
 
 @login_required()
 def filter(request):
